@@ -4,6 +4,10 @@ const nodemailer = require('nodemailer');
 const randomstring = require('randomstring');
 const User = require('../models/User');
 const config = require('../config/config');
+const { isPasswordStrong, isPasswordReused } = require('../utils/passwordUtils');
+
+const PASSWORD_HISTORY_LIMIT = 3; // Number of previous passwords to remember
+const PASSWORD_EXPIRY_DAYS = 90; // Example: 90 days
 
 const registerUser = async (req, res) => {
     try {
@@ -84,6 +88,14 @@ const loginUser = async (req, res) => {
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
             return res.status(401).json({ success: false, message: 'Invalid email or password' });
+        }
+
+        // Check password expiry
+        const now = new Date();
+        const lastChanged = user.passwordLastChanged || user.createdAt;
+        const diffDays = (now - lastChanged) / (1000 * 60 * 60 * 24);
+        if (diffDays > PASSWORD_EXPIRY_DAYS) {
+            return res.status(403).json({ message: 'Password expired. Please change your password.' });
         }
 
         // Generate token with longer expiration for admin users
@@ -287,6 +299,47 @@ const resetPassword = async (req, res) => {
     }
 };
 
+const changePassword = async (req, res) => {
+  try {
+    const userId = req.user.id; // Adjust as per your auth middleware
+    const { oldPassword, newPassword } = req.body;
+
+    const user = await User.findById(userId);
+
+    // 1. Check old password
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Old password is incorrect.' });
+    }
+
+    // 2. Check password strength
+    if (!isPasswordStrong(newPassword)) {
+      return res.status(400).json({ message: 'New password does not meet complexity requirements.' });
+    }
+
+    // 3. Check password reuse
+    if (await isPasswordReused(newPassword, user.passwordHistory)) {
+      return res.status(400).json({ message: 'You cannot reuse your previous passwords.' });
+    }
+
+    // 4. Hash new password
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+    // 5. Update password history (keep only last N)
+    user.passwordHistory.unshift(hashedNewPassword);
+    user.passwordHistory = user.passwordHistory.slice(0, PASSWORD_HISTORY_LIMIT);
+
+    // 6. Update password and last changed
+    user.password = hashedNewPassword;
+    user.passwordLastChanged = new Date();
+
+    await user.save();
+    res.json({ message: 'Password changed successfully.' });
+  } catch (err) {
+    res.status(500).json({ message: 'Password change failed.', error: err.message });
+  }
+};
+
 module.exports = {
     registerUser,
     loginUser,
@@ -295,5 +348,6 @@ module.exports = {
     resetPassword,
     uploadImage,
     refreshToken,
-    verifyToken
+    verifyToken,
+    changePassword
 };
