@@ -29,7 +29,6 @@ const Register = () => {
   };
 
   const validateForm = () => {
-    // Check if all fields are filled
     if (
       !formData.name ||
       !formData.email ||
@@ -40,13 +39,11 @@ const Register = () => {
       return false;
     }
 
-    // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
       toast.error("Passwords do not match");
       return false;
     }
 
-    // Check password strength
     if (!isPasswordStrong(formData.password)) {
       toast.error("Password must be 8 characters and must contain an uppercase, lower case, a number, and a special character.");
       return false;
@@ -68,19 +65,19 @@ const Register = () => {
         );
 
         if (response.data.success) {
-          toast.success("User registered successfully!"); // Show success toast
+          toast.success("User registered successfully!"); 
           setFormData({
             name: "",
             email: "",
             password: "",
             confirmPassword: "",
           });
-          navigate("/login"); // Redirect to login page after successful signup
+          navigate("/login"); 
         }
       } catch (error) {
         const errorMsg =
           error.response?.data?.message || "Something went wrong!";
-        toast.error(errorMsg); // Show error toast (e.g., email already exists)
+        toast.error(errorMsg);
       }
     }
   };
@@ -141,13 +138,11 @@ const Register = () => {
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? (
-                    // Eye Open SVG
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="22" height="22">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
                   ) : (
-                    // Eye Closed SVG
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="22" height="22">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.269-2.943-9.543-7a9.956 9.956 0 012.293-3.95M6.873 6.872A9.956 9.956 0 0112 5c4.478 0 8.269 2.943 9.543 7a9.956 9.956 0 01-4.293 5.95M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3l18 18" />
@@ -182,7 +177,6 @@ const Register = () => {
                 aria-label={showConfirmPassword ? "Hide password" : "Show password"}
               >
                 {showConfirmPassword ? (
-                  // Eye Open SVG
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="22" height="22">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />

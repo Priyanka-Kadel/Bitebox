@@ -1,5 +1,3 @@
-// frontend-Bitebox/src/utils/passwordValidation.js
-
 /**
  * Checks if a password is strong.
  * Requirements:
