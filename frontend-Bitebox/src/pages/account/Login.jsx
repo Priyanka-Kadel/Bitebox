@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import React from "react";
 
 import Footer from "../../components/Footer"; 
 import Navbar from "../../components/Navbar";
@@ -13,6 +14,14 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Show admin access denied toast if redirected from admin route
+  React.useEffect(() => {
+    if (location.state?.adminOnly) {
+      window.dispatchEvent(new Event('admin-access-denied'));
+    }
+  }, [location.state]);
 
   const handleLogin = async (e) => {
     e.preventDefault();

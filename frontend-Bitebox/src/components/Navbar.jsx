@@ -42,6 +42,24 @@ const Navbar = () => {
     };
   }, []);
 
+  useEffect(() => {
+    // Listen for admin access denied event
+    const handleAdminAccessDenied = () => {
+      toast.error("You need to login as admin first!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    };
+    window.addEventListener('admin-access-denied', handleAdminAccessDenied);
+    return () => {
+      window.removeEventListener('admin-access-denied', handleAdminAccessDenied);
+    };
+  }, []);
+
   const handleLogout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("role");

@@ -11,7 +11,7 @@ import AboutUs from "./pages/homepage/AboutUs.jsx";
 import ContactUs from "./pages/homepage/ContactUs.jsx";
 import Dashboard from "./pages/homepage/Dashboard.jsx";
 import RecipeDetails from "./pages/homepage/RecipeDetails.jsx";
-
+import AdminRoute from "./components/adminRoute.jsx";
 import Failure from "./pages/payment/Failure.jsx";
 import Success from "./pages/payment/Success.jsx";
 import AddRecipes from "./pages/private/AddRecipes.jsx";
@@ -50,7 +50,9 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/edit-profile/:id" element={<EditProfile />} />
-            <Route path="/adminDash" element={<AdminDashboard />} />
+            <Route path="/adminDash" element={<AdminRoute />}>
+              <Route index element={<AdminDashboard />} />
+            </Route>
             <Route path="/aboutus" element={<AboutUs />} />
             <Route path="/contactus" element={<ContactUs />} />
             <Route path="/recipe-details/:id" element={<RecipeDetails />} />
