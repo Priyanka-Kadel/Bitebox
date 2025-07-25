@@ -25,12 +25,10 @@ const getCart = async (req, res) => {
     }
 };
 
-// Add recipe to cart
 const addToCart = async (req, res) => {
     try {
         const { recipeId, servings } = req.body;
 
-        // Validate recipe exists
         const recipe = await Recipe.findById(recipeId);
         if (!recipe) {
             return res.status(404).json({ 
@@ -39,7 +37,6 @@ const addToCart = async (req, res) => {
             });
         }
 
-        // Calculate price for requested servings
         const priceForServings = recipe.calculatePriceForServings(servings);
 
         let cart = await Cart.findOne({ user: req.user.id, isActive: true });
@@ -48,17 +45,14 @@ const addToCart = async (req, res) => {
             cart = new Cart({ user: req.user.id, items: [], totalAmount: 0 });
         }
 
-        // Check if recipe already exists in cart
         const existingItemIndex = cart.items.findIndex(
             item => item.recipe.toString() === recipeId
         );
 
         if (existingItemIndex > -1) {
-            // Update existing item
             cart.items[existingItemIndex].servings = servings;
             cart.items[existingItemIndex].totalPrice = priceForServings;
         } else {
-            // Add new item
             cart.items.push({
                 recipe: recipeId,
                 servings: servings,
@@ -66,7 +60,6 @@ const addToCart = async (req, res) => {
             });
         }
 
-        // Recalculate total
         cart.totalAmount = cart.calculateTotal();
         await cart.save();
 
@@ -86,7 +79,6 @@ const addToCart = async (req, res) => {
     }
 };
 
-// Update cart item quantity
 const updateCartItem = async (req, res) => {
     try {
         const { itemId, servings } = req.body;
@@ -107,7 +99,6 @@ const updateCartItem = async (req, res) => {
             });
         }
 
-        // Get recipe to calculate new price
         const recipe = await Recipe.findById(item.recipe);
         const newPrice = recipe.calculatePriceForServings(servings);
 
@@ -133,7 +124,6 @@ const updateCartItem = async (req, res) => {
     }
 };
 
-// Remove item from cart
 const removeFromCart = async (req, res) => {
     try {
         const { itemId } = req.params;
@@ -166,7 +156,6 @@ const removeFromCart = async (req, res) => {
     }
 };
 
-// Clear cart
 const clearCart = async (req, res) => {
     try {
         const cart = await Cart.findOne({ user: req.user.id, isActive: true });
