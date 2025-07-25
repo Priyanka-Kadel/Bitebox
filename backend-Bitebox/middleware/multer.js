@@ -1,5 +1,4 @@
 const multer = require("multer");
-// const maxSize = 2 * 1024 * 1024; // 2MB
 const path = require("path");
 
 const storage = multer.diskStorage({
@@ -22,7 +21,6 @@ const imageFileFilter = (req, file, cb) => {
 const upload = multer({
   storage: storage,
   fileFilter: imageFileFilter,
-  // limits: { fileSize: maxSize },
 }).single("profilePicture");
 
 module.exports = upload;
