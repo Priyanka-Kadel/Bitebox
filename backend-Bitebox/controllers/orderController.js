@@ -20,7 +20,6 @@ const getUserOrders = async (req, res) => {
     }
 };
 
-// Get order by ID
 const getOrderById = async (req, res) => {
     try {
         const order = await Order.findById(req.params.id)
@@ -34,7 +33,6 @@ const getOrderById = async (req, res) => {
             });
         }
 
-        // Check if user owns this order or is admin
         if (order.user._id.toString() !== req.user.id && req.user.role !== 'admin') {
             return res.status(403).json({ 
                 success: false, 
@@ -55,7 +53,6 @@ const getOrderById = async (req, res) => {
     }
 };
 
-// Get all orders (admin only)
 const getAllOrders = async (req, res) => {
     try {
         const orders = await Order.find({})
@@ -76,7 +73,7 @@ const getAllOrders = async (req, res) => {
     }
 };
 
-// Update order status (admin only)
+
 const updateOrderStatus = async (req, res) => {
     try {
         const { status } = req.body;
@@ -106,7 +103,6 @@ const updateOrderStatus = async (req, res) => {
     }
 };
 
-// Cancel order
 const cancelOrder = async (req, res) => {
     try {
         const order = await Order.findById(req.params.id);
@@ -118,7 +114,6 @@ const cancelOrder = async (req, res) => {
             });
         }
 
-        // Check if user owns this order or is admin
         if (order.user.toString() !== req.user.id && req.user.role !== 'admin') {
             return res.status(403).json({ 
                 success: false, 
@@ -126,7 +121,6 @@ const cancelOrder = async (req, res) => {
             });
         }
 
-        // Only allow cancellation if order is pending or confirmed
         if (!['pending', 'confirmed'].includes(order.status)) {
             return res.status(400).json({ 
                 success: false, 
