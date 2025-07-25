@@ -5,7 +5,6 @@ const User = require('../models/User');
 const Recipe = require('../models/recipeModel');
 const jwt = require('jsonwebtoken');
 
-// Get user by ID
 const getUserById = async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
@@ -33,7 +32,6 @@ const getUserById = async (req, res) => {
     }
 };
 
-// Get current user profile
 const getCurrentUser = async (req, res) => {
     try {
         const user = await User.findById(req.user.id)
@@ -54,7 +52,6 @@ const getCurrentUser = async (req, res) => {
     }
 };
 
-// Get all users (admin only)
 const getAllUsers = async (req, res) => {
     try {
         const users = await User.find({}).select('-password');
@@ -72,25 +69,22 @@ const getAllUsers = async (req, res) => {
     }
 };
 
-// Update user profile
 const updateUser = async (req, res) => {
     const { name, email, address, phone } = req.body;
     const userId = req.params.id;
   
     try {
-        // Find the user by ID
         const user = await User.findById(userId);
         if (!user) {
             return res.status(404).json({ success: false, message: 'User not found' });
         }
   
-        // Update user fields
+
         if (name) user.name = name;
         if (email) user.email = email;
         if (address) user.address = address;
         if (phone) user.phone = phone;
   
-        // Save the updated user
         await user.save();
   
         res.status(200).json({ success: true, message: 'User updated successfully', user });
@@ -100,13 +94,11 @@ const updateUser = async (req, res) => {
     }
 };
 
-// Save recipe to user's saved recipes
 const saveRecipe = async (req, res) => {
     try {
         const { recipeId } = req.body;
         const userId = req.user.id;
 
-        // Check if recipe exists
         const recipe = await Recipe.findById(recipeId);
         if (!recipe) {
             return res.status(404).json({ 
@@ -123,7 +115,6 @@ const saveRecipe = async (req, res) => {
             });
         }
 
-        // Check if recipe is already saved
         if (user.savedRecipes.includes(recipeId)) {
             return res.status(400).json({ 
                 success: false, 
@@ -131,7 +122,6 @@ const saveRecipe = async (req, res) => {
             });
         }
 
-        // Add recipe to saved recipes
         user.savedRecipes.push(recipeId);
         await user.save();
 
@@ -151,7 +141,6 @@ const saveRecipe = async (req, res) => {
     }
 };
 
-// Remove recipe from user's saved recipes
 const removeSavedRecipe = async (req, res) => {
     try {
         const { recipeId } = req.params;
@@ -165,7 +154,6 @@ const removeSavedRecipe = async (req, res) => {
             });
         }
 
-        // Remove recipe from saved recipes
         user.savedRecipes = user.savedRecipes.filter(
             id => id.toString() !== recipeId
         );
@@ -187,7 +175,6 @@ const removeSavedRecipe = async (req, res) => {
     }
 };
 
-// Get user's saved recipes
 const getSavedRecipes = async (req, res) => {
     try {
         const userId = req.user.id;
@@ -215,7 +202,6 @@ const getSavedRecipes = async (req, res) => {
     }
 };
 
-// Check if recipe is saved by user
 const checkSavedRecipe = async (req, res) => {
     try {
         const { recipeId } = req.params;
