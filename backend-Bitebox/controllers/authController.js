@@ -6,26 +6,23 @@ const User = require('../models/User');
 const config = require('../config/config');
 const { isPasswordStrong, isPasswordReused } = require('../utils/passwordUtils');
 
-const PASSWORD_HISTORY_LIMIT = 3; // Number of previous passwords to remember
-const PASSWORD_EXPIRY_DAYS = 90; // Example: 90 days
+const PASSWORD_HISTORY_LIMIT = 3;
+const PASSWORD_EXPIRY_DAYS = 90;
 
 const registerUser = async (req, res) => {
     try {
       const { name, email, password, confirm_password, role } = req.body;
       let image = req.file ? req.file.path : null;
   
-      // Validate required fields
       if (!name || !email || !password) {
         return res.status(400).json({ message: "All fields are required" });
       }
   
-      // Check if user already exists
       const userExist = await User.findOne({ email });
       if (userExist) {
         return res.status(400).json({ message: "Email already exists" });
       }
   
-      // Create new user
       const user = new User({
         name,
         email,
@@ -35,7 +32,6 @@ const registerUser = async (req, res) => {
         image,
       });
   
-      // Generate token with longer expiration for admin users
       const tokenExpiration = role === 'admin' ? '7d' : '24h';
       const token = jwt.sign(
         { id: user._id, email: user.email, role: user.role },
@@ -43,7 +39,6 @@ const registerUser = async (req, res) => {
         { expiresIn: tokenExpiration }
       );
   
-      // Save token to user document
       user.token = token;
       await user.save();
   
@@ -71,7 +66,6 @@ const uploadImage = async (req, res, next) => {
     });
 };
 
-// Login a user
 const loginUser = async (req, res) => {
     if (req.loginLimiter && req.loginLimiter.blocked) {
         return res.status(429).json({ error: 'Too many login attempts. Please try again later.' });
@@ -96,7 +90,6 @@ const loginUser = async (req, res) => {
             return res.status(401).json({ success: false, message: 'Invalid email or password' });
         }
 
-        // Check password expiry
         const now = new Date();
         const lastChanged = user.passwordLastChanged || user.createdAt;
         const diffDays = (now - lastChanged) / (1000 * 60 * 60 * 24);
@@ -104,7 +97,6 @@ const loginUser = async (req, res) => {
             return res.status(403).json({ message: 'Password expired. Please change your password.' });
         }
 
-        // Generate token with longer expiration for admin users
         const tokenExpiration = user.role === 'admin' ? '7d' : '24h';
         const token = jwt.sign(
             { id: user._id, email: user.email, role: user.role },
@@ -112,7 +104,6 @@ const loginUser = async (req, res) => {
             { expiresIn: tokenExpiration }
         );
 
-        // Update user's token in database
         user.token = token;
         await user.save();
 
@@ -132,7 +123,6 @@ const loginUser = async (req, res) => {
     }
 };
 
-// Refresh token endpoint
 const refreshToken = async (req, res) => {
     try {
         const { token } = req.body;
@@ -141,7 +131,6 @@ const refreshToken = async (req, res) => {
             return res.status(400).json({ message: 'Token is required' });
         }
 
-        // Verify the current token
         const decoded = jwt.verify(token, process.env.JWT_SECRET || 'SECRETHO');
         const user = await User.findById(decoded.id);
 
@@ -149,7 +138,6 @@ const refreshToken = async (req, res) => {
             return res.status(401).json({ message: 'User not found' });
         }
 
-        // Generate new token
         const tokenExpiration = user.role === 'admin' ? '7d' : '24h';
         const newToken = jwt.sign(
             { id: user._id, email: user.email, role: user.role },
@@ -157,7 +145,6 @@ const refreshToken = async (req, res) => {
             { expiresIn: tokenExpiration }
         );
 
-        // Update user's token in database
         user.token = newToken;
         await user.save();
 
@@ -175,7 +162,6 @@ const refreshToken = async (req, res) => {
     }
 };
 
-// Verify token endpoint
 const verifyToken = async (req, res) => {
     try {
         const { token } = req.body;
@@ -309,35 +295,29 @@ const resetPassword = async (req, res) => {
 
 const changePassword = async (req, res) => {
   try {
-    const userId = req.user.id; // Adjust as per your auth middleware
+    const userId = req.user.id;
     const { oldPassword, newPassword } = req.body;
 
     const user = await User.findById(userId);
 
-    // 1. Check old password
     const isMatch = await bcrypt.compare(oldPassword, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: 'Old password is incorrect.' });
     }
 
-    // 2. Check password strength
     if (!isPasswordStrong(newPassword)) {
       return res.status(400).json({ message: 'New password does not meet complexity requirements.' });
     }
 
-    // 3. Check password reuse
     if (await isPasswordReused(newPassword, user.passwordHistory)) {
       return res.status(400).json({ message: 'You cannot reuse your previous passwords.' });
     }
 
-    // 4. Hash new password
     const hashedNewPassword = await bcrypt.hash(newPassword, 10);
 
-    // 5. Update password history (keep only last N)
     user.passwordHistory.unshift(hashedNewPassword);
     user.passwordHistory = user.passwordHistory.slice(0, PASSWORD_HISTORY_LIMIT);
 
-    // 6. Update password and last changed
     user.password = hashedNewPassword;
     user.passwordLastChanged = new Date();
 
