@@ -9,12 +9,12 @@ const Failure = () => {
     const navigate = useNavigate();
   
     useEffect(() => {
-      toast.error("Payment Failed!", { autoClose: 3000 }); // Toast notification
+      toast.error("Payment Failed!", { autoClose: 3000 });
       const timer = setTimeout(() => {
         navigate("/");
-      }, 5000); // Redirect after 5 seconds
+      }, 5000);
   
-      return () => clearTimeout(timer); // Cleanup timer on unmount
+      return () => clearTimeout(timer);
     }, [navigate]);
   
     return (
