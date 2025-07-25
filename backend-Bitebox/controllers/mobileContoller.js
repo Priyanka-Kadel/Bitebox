@@ -2,7 +2,7 @@ const asyncHandler = require("../middleware/async");
 const User = require("../models/User");
 const path = require("path");
 const fs = require("fs");
-const bcrypt = require("bcryptjs"); // Ensure bcrypt is imported
+const bcrypt = require("bcryptjs");
 
 exports.getUsers = asyncHandler(async (req, res, next) => {
   const users = await User.find({});
@@ -51,7 +51,7 @@ exports.login = asyncHandler(async (req, res, next) => {
 
 exports.getMe = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.user.id).select("-password");
-  console.log("getMe user:", user); // Debug
+  console.log("getMe user:", user);
   res.status(200).json(user);
 });
 
@@ -83,18 +83,18 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
   const userId = req.user.id;
   const { name, password } = req.body;
 
-  console.log("updateUser request body:", req.body); // Debug input
+  console.log("updateUser request body:", req.body);
 
   const updateData = {};
   if (name) updateData.name = name;
   if (password) {
     const salt = await bcrypt.genSalt(10);
     updateData.password = await bcrypt.hash(password, salt);
-    console.log("Password hashed:", updateData.password); // Debug hash
+    console.log("Password hashed:", updateData.password);
   }
   if (req.file) updateData.image = req.file.filename;
 
-  console.log("Updating user with data:", updateData); // Debug before update
+  console.log("Updating user with data:", updateData);
 
   const user = await User.findByIdAndUpdate(
     userId,
@@ -106,7 +106,7 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
     return res.status(404).json({ message: `User not found with id of ${userId}` });
   }
 
-  console.log("Updated user:", user); // Debug output
+  console.log("Updated user:", user);
   res.status(200).json({
     success: true,
     message: "Profile updated successfully",
