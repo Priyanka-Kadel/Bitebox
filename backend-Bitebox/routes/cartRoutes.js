@@ -7,9 +7,8 @@ const {
   removeFromCart, 
   clearCart 
 } = require("../controllers/cartController");
-const { protect } = require("../middleware/auth"); // Fixed import
+const { protect } = require("../middleware/auth");
 
-// All cart routes require authentication
 router.use(protect);
 
 router.get("/", getCart);

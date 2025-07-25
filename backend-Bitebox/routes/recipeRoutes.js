@@ -11,7 +11,7 @@ const {
   getCategories,
   upload 
 } = require("../controllers/recipeController");
-const { protect } = require("../middleware/auth"); // Fixed import
+const { protect } = require("../middleware/auth"); 
 
 // Public routes
 router.get("/", getAllRecipes);

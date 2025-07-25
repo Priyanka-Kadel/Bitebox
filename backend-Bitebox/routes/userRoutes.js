@@ -1,4 +1,3 @@
-// routes/userRoutes.js
 const express = require('express');
 const router = express.Router();
 const { 
@@ -20,7 +19,6 @@ router.get('/customer/:id', getUserById);
 // Protected routes (require authentication)
 router.use(protect);
 
-// Debug route to check user authentication and role
 router.get('/debug/me', (req, res) => {
     res.json({
         success: true,

@@ -9,7 +9,6 @@ const {
 } = require("../controllers/orderController");
 const { protect, authorize } = require("../middleware/auth");
 
-// All order routes require authentication
 router.use(protect);
 
 // User routes

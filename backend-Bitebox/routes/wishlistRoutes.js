@@ -3,7 +3,6 @@ const router = express.Router();
 const { protect } = require('../middleware/auth');
 const User = require('../models/User');
 
-// Add recipe to wishlist (saved recipes)
 router.post('/wishlist/add/:recipeId', protect, async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
@@ -11,7 +10,6 @@ router.post('/wishlist/add/:recipeId', protect, async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Ensure savedRecipes is an array (for older users without the field)
     if (!Array.isArray(user.savedRecipes)) {
       user.savedRecipes = [];
     }
@@ -27,7 +25,6 @@ router.post('/wishlist/add/:recipeId', protect, async (req, res) => {
   }
 });
 
-// Get user's saved recipes (wishlist)
 router.get('/wishlist', protect, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).populate('savedRecipes', 'title recipeImage category totalPrice prepTime cookTime difficulty');
@@ -41,7 +38,6 @@ router.get('/wishlist', protect, async (req, res) => {
   }
 });
 
-// Remove recipe from wishlist (saved recipes)
 router.delete('/wishlist/remove/:recipeId', protect, async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
@@ -57,7 +53,6 @@ router.delete('/wishlist/remove/:recipeId', protect, async (req, res) => {
   }
 });
 
-// Check if recipe is in wishlist
 router.get('/wishlist/check/:recipeId', protect, async (req, res) => {
   try {
     const user = await User.findById(req.user.id);

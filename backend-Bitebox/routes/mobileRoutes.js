@@ -21,6 +21,6 @@ router.get("/getUser", protect, getUser);
 router.get("/getAllUser", getUsers);
 router.get("/getMe", protect, getMe);
 router.put("/updateUser", protect, upload, updateUser);
-router.post("/deleteUser", protect, deleteUser); // Changed to POST
+router.post("/deleteUser", protect, deleteUser);
 
 module.exports = router;
