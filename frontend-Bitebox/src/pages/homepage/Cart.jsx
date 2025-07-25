@@ -13,7 +13,6 @@ const Cart = () => {
   const [itemToDelete, setItemToDelete] = useState(null);
 
   useEffect(() => {
-    // Check if user is logged in
     const storedUser = localStorage.getItem("user");
     if (!storedUser) {
       alert("Please log in to view your cart!");
@@ -25,7 +24,6 @@ const Cart = () => {
       const userObj = JSON.parse(storedUser);
       setUser(userObj);
       
-      // Load user-specific cart using user ID
       const userCartKey = `cart_${userObj.id}`;
       const cart = JSON.parse(localStorage.getItem(userCartKey) || "[]");
       setCartItems(cart);
@@ -49,7 +47,6 @@ const Cart = () => {
     
     setCartItems(updatedCart);
     
-    // Update user-specific cart in localStorage
     const userCartKey = `cart_${user.id}`;
     localStorage.setItem(userCartKey, JSON.stringify(updatedCart));
     
@@ -61,12 +58,10 @@ const Cart = () => {
   const removeFromCart = (recipeId) => {
     const updatedCart = cartItems.filter(item => item.recipeId !== recipeId);
     setCartItems(updatedCart);
-    
-    // Update user-specific cart in localStorage
+
     const userCartKey = `cart_${user.id}`;
     localStorage.setItem(userCartKey, JSON.stringify(updatedCart));
     
-    // Update cart count in navbar
     const event = new CustomEvent('cartUpdated', { detail: updatedCart.length });
     window.dispatchEvent(event);
   };
@@ -84,7 +79,7 @@ const Cart = () => {
   }
 
   if (!user) {
-    return null; // Will redirect to login
+    return null;
   }
 
   return (
@@ -140,7 +135,6 @@ const Cart = () => {
                     Total: ₹{item.price}
                   </p>
                 </div>
-                {/* Trash button absolutely positioned center right */}
                 <button
                   onClick={() => {
                     setItemToDelete(item.recipeId);

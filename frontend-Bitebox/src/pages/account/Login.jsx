@@ -44,7 +44,6 @@ const Login = () => {
           navigate("/admindash");
         }
     } catch (error) {
-      // Check for 429 and show the correct message regardless of field
       const tooManyAttemptsMsg = "Too many login attempts. Please try again later.";
       if (
         error.response?.status === 429 &&
@@ -53,7 +52,6 @@ const Login = () => {
       ) {
         toast.error(tooManyAttemptsMsg);
       } else {
-        // Show backend message if available, otherwise generic
         const errorMsg =
           error.response?.data?.message ||
           error.response?.data?.error ||
@@ -66,7 +64,6 @@ const Login = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#034694]/10 via-white to-[#034694]/5 relative">
       <div className="flex-grow flex flex-col md:flex-row items-center justify-center px-4 py-8 w-full gap-x-12">
-        {/* Right: Login Form (now first in DOM, so left on md+) */}
         <div className="w-full md:w-1/2 flex flex-col justify-center p-8 md:p-16 bg-white/95 rounded-3xl shadow-2xl border border-[#034694]/20 max-w-md md:mr-8">
           <h2 className="text-4xl font-extrabold text-center text-black mb-6 tracking-tight">Sign in</h2>
           <p className="text-center text-black mb-8 text-base">Welcome back to <span className="font-bold">Bitebox</span>! Please enter your details to access your favorite recipes.</p>
@@ -137,7 +134,6 @@ const Login = () => {
             </p>
           </div>
         </div>
-        {/* Left: Illustration (now second in DOM, so right on md+) */}
         <div className="hidden md:flex md:w-1/2 items-center justify-center h-full md:ml-8">
           <img
             src={loginIllustration}

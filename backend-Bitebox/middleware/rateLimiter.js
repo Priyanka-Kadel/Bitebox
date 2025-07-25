@@ -11,12 +11,10 @@ function loginAttemptLimiter(req, res, next) {
     attempts[ip] = { count: 0, firstAttempt: now };
   }
 
-  // Reset if window has passed
   if (now - attempts[ip].firstAttempt > WINDOW_MS) {
     attempts[ip] = { count: 0, firstAttempt: now };
   }
 
-  // Attach limiter state to req for controller to update on failure/success
   req.loginLimiter = {
     blocked: false,
     increment: () => { attempts[ip].count += 1; },
