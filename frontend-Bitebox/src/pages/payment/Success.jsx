@@ -7,11 +7,9 @@ const Success = () => {
   const navigate = useNavigate();
   const [deliveryDate, setDeliveryDate] = useState("");
 
-  // Get order details from navigation state
   const order = location.state?.orderDetails;
 
   useEffect(() => {
-    // Calculate delivery date (next day)
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     setDeliveryDate(tomorrow.toLocaleDateString(undefined, {
@@ -21,7 +19,6 @@ const Success = () => {
       day: "numeric"
     }));
 
-    // Redirect to home after 10 seconds
     const timer = setTimeout(() => {
       navigate("/");
     }, 10000);
@@ -29,7 +26,6 @@ const Success = () => {
   }, [navigate]);
 
   if (!order) {
-    // Fallback if accessed directly
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-white">
         <img src={tickGif} alt="Success" className="w-32 h-32 mb-6" />
