@@ -1,7 +1,6 @@
 // models/recipeModel.js
 const mongoose = require('mongoose');
 
-// Define the schema for a recipe
 const ingredientSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -34,7 +33,7 @@ const stepSchema = new mongoose.Schema({
     required: true
   },
   duration: {
-    type: Number, // in minutes
+    type: Number,
     default: 0
   }
 });
@@ -55,11 +54,11 @@ const recipeSchema = new mongoose.Schema({
     enum: ['breakfast', 'lunch', 'dinner']
   },
   prepTime: {
-    type: Number, // in minutes
+    type: Number,
     required: true,
   },
   cookTime: {
-    type: Number, // in minutes
+    type: Number,
     required: true,
   },
   servings: {
@@ -85,24 +84,22 @@ const recipeSchema = new mongoose.Schema({
     default: 0
   },
   recipeImage: {
-    type: String,  // Store image URL or path
+    type: String,
     required: false,
   },
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Admin user who created the recipe
-    required: false, // Made optional since only admins create recipes
+    ref: 'User', 
+    required: false, 
   },
 }, { timestamps: true });
 
-// Calculate total price based on ingredients
 recipeSchema.methods.calculateTotalPrice = function() {
   return this.ingredients.reduce((total, ingredient) => {
     return total + (ingredient.quantity * ingredient.price);
   }, 0);
 };
 
-// Calculate price for specific number of servings
 recipeSchema.methods.calculatePriceForServings = function(servings) {
   const basePrice = this.calculateTotalPrice();
   const baseServings = this.servings;

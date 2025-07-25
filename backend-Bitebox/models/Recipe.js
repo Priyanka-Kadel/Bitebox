@@ -32,7 +32,7 @@ const stepSchema = new mongoose.Schema({
     required: true
   },
   duration: {
-    type: Number, // in minutes
+    type: Number, 
     default: 0
   }
 });
@@ -62,11 +62,11 @@ const recipeSchema = new mongoose.Schema({
     enum: ['Easy', 'Medium', 'Hard']
   },
   prepTime: {
-    type: Number, // in minutes
+    type: Number, 
     required: true
   },
   cookTime: {
-    type: Number, // in minutes
+    type: Number, 
     required: true
   },
   servings: {
@@ -102,14 +102,12 @@ const recipeSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-// Calculate total price based on ingredients
 recipeSchema.methods.calculateTotalPrice = function() {
   return this.ingredients.reduce((total, ingredient) => {
     return total + (ingredient.quantity * ingredient.price);
   }, 0);
 };
 
-// Calculate price for specific number of servings
 recipeSchema.methods.calculatePriceForServings = function(servings) {
   const basePrice = this.calculateTotalPrice();
   const baseServings = this.servings;

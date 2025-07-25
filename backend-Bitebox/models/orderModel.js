@@ -62,7 +62,6 @@ const orderSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-// Generate order number
 orderSchema.pre('save', function(next) {
   if (!this.orderNumber) {
     this.orderNumber = 'ORD-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9).toUpperCase();
