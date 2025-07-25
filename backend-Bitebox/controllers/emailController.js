@@ -48,7 +48,7 @@
 // module.exports = { sendEmail };
 
 const nodemailer = require('nodemailer');
-const config = require('../config/config'); // Import the config file
+const config = require('../config/config');
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -56,8 +56,8 @@ const transporter = nodemailer.createTransport({
   port: 465,
   secure: true,
   auth: {
-    user: config.emailUser, // Use config instead of process.env
-    pass: config.emailPassword // Use config instead of process.env
+    user: config.emailUser, 
+    pass: config.emailPassword 
   }
 });
 
@@ -73,11 +73,11 @@ const sendEmail = async (req, res) => {
 
   try {
     await transporter.sendMail({
-      from: `BasobasMitra <${config.emailUser}>`, // Use config instead of process.env
+      from: `BasobasMitra <${config.emailUser}>`,
       to,
       subject,
-      text, // Plain text version
-      html  // HTML version
+      text,
+      html
     });
 
     res.status(200).json({ 
