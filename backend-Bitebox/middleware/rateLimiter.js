@@ -1,4 +1,4 @@
-const WINDOW_MS = 1* 60 * 1000; 
+const WINDOW_MS = 2* 60 * 1000; 
 const MAX_ATTEMPTS = 5;
 
 const attempts = {};
