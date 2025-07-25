@@ -2,7 +2,6 @@ const multer = require("multer");
 const fs = require("fs");
 const Recipe = require("../models/recipeModel");
 
-// Create a new recipe (Admin only)
 const createRecipe = async (req, res) => {
     try {
       console.log("Creating recipe with data:", req.body);
@@ -20,9 +19,8 @@ const createRecipe = async (req, res) => {
         totalPrice
       } = req.body;
       
-      const recipeImage = req.file ? req.file.path : ""; // Assuming you're using multer for file upload
+      const recipeImage = req.file ? req.file.path : "";
 
-      // Parse ingredients and steps with error handling
       let parsedIngredients = [];
       let parsedSteps = [];
 
@@ -50,7 +48,6 @@ const createRecipe = async (req, res) => {
         });
       }
 
-      // Validate ingredients
       for (let i = 0; i < parsedIngredients.length; i++) {
         const ingredient = parsedIngredients[i];
         if (!ingredient.name || !ingredient.quantity || !ingredient.unit) {
@@ -61,7 +58,6 @@ const createRecipe = async (req, res) => {
           });
         }
         
-        // Validate unit
         const validUnits = ['g', 'kg', 'ml', 'l', 'tbsp', 'tsp', 'cup', 'piece', 'slice', 'clove', 'bunch', 'pinch', 'dash', 'whole', 'can', 'jar', 'packet'];
         if (!validUnits.includes(ingredient.unit)) {
           return res.status(400).json({
@@ -71,7 +67,6 @@ const createRecipe = async (req, res) => {
         }
       }
 
-      // Validate steps
       for (let i = 0; i < parsedSteps.length; i++) {
         const step = parsedSteps[i];
         if (!step.stepNumber || !step.instruction) {
@@ -83,7 +78,6 @@ const createRecipe = async (req, res) => {
         }
       }
 
-      // Create recipe object
       const recipeData = {
         title,
         description,
@@ -107,7 +101,6 @@ const createRecipe = async (req, res) => {
     } catch (error) {
       console.error("Error creating recipe:", error);
       
-      // Handle mongoose validation errors
       if (error.name === 'ValidationError') {
         const validationErrors = Object.values(error.errors).map(err => ({
           field: err.path,
@@ -125,14 +118,12 @@ const createRecipe = async (req, res) => {
     }
   };
   
-  // Get all recipes with filtering (Public)
   const getAllRecipes = async (req, res) => {
     try {
       console.log("Getting all recipes");
       const { category, search, sortBy } = req.query;
       let query = {};
       
-      // Apply filters
       if (category) query.category = category;
       if (search) {
         query.$or = [
@@ -143,7 +134,6 @@ const createRecipe = async (req, res) => {
       
       let recipes = Recipe.find(query);
       
-      // Apply sorting
       if (sortBy === 'price') recipes = recipes.sort({ totalPrice: 1 });
       else if (sortBy === 'time') recipes = recipes.sort({ prepTime: 1 });
       else if (sortBy === 'rating') recipes = recipes.sort({ rating: -1 });
@@ -157,7 +147,6 @@ const createRecipe = async (req, res) => {
     }
   };
 
-  // Get recipes by category (Public)
   const getRecipesByCategory = async (req, res) => {
     try {
       const { category } = req.params;
@@ -171,7 +160,6 @@ const createRecipe = async (req, res) => {
     }
   };
 
-  // Get all categories (Public)
   const getCategories = async (req, res) => {
     try {
       const categories = ['breakfast', 'lunch', 'dinner'];
@@ -182,7 +170,6 @@ const createRecipe = async (req, res) => {
   };
   
 
-// Get a single recipe by id (Public)
 const getRecipeById = async (req, res) => {
   try {
     const recipe = await Recipe.findById(req.params.id).populate('user_id', 'name');
@@ -195,7 +182,6 @@ const getRecipeById = async (req, res) => {
   }
 };
 
-// Calculate price for specific servings (Public)
 const calculatePriceForServings = async (req, res) => {
   try {
     const { servings } = req.body;
@@ -232,22 +218,19 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// Update recipe by id (Admin only)
 const updateRecipe = async (req, res) => {
   try {
-    // First handle the image upload
-    const recipeImage = req.file ? req.file.path : undefined;  // Get the new image path, if uploaded
+    const recipeImage = req.file ? req.file.path : undefined; 
 
     const updateData = { ...req.body };
     if (req.body.ingredients) updateData.ingredients = JSON.parse(req.body.ingredients);
     if (req.body.steps) updateData.steps = JSON.parse(req.body.steps);
     if (recipeImage) updateData.recipeImage = recipeImage;
 
-    // Now, update the recipe data including the image
     const updatedRecipe = await Recipe.findByIdAndUpdate(
       req.params.id,
       updateData,
-      { new: true }  // This ensures the updated recipe is returned
+      { new: true } 
     );
 
     if (!updatedRecipe) {
@@ -260,7 +243,6 @@ const updateRecipe = async (req, res) => {
   }
 };
 
-// Delete recipe by id (Admin only)
 const deleteRecipe = async (req, res) => {
   try {
     const deletedRecipe = await Recipe.findByIdAndDelete(req.params.id);
