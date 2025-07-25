@@ -32,7 +32,6 @@ const Login = () => {
 
       localStorage.setItem("user", JSON.stringify({ token, name, role, email:response?.data?.email ?? email, _id}));
       localStorage.setItem("userId", _id); 
-     
 
       console.log("Stored user:", localStorage.getItem("user"));
       console.log("Stored userId:", localStorage.getItem("userId"));
@@ -45,10 +44,22 @@ const Login = () => {
           navigate("/admindash");
         }
     } catch (error) {
-      const errorMsg =
-        error.response?.data?.message || "Login failed. Please try again.";
-
-      toast.error(errorMsg);
+      // Check for 429 and show the correct message regardless of field
+      const tooManyAttemptsMsg = "Too many login attempts. Please try again later.";
+      if (
+        error.response?.status === 429 &&
+        (error.response?.data?.error === tooManyAttemptsMsg ||
+         error.response?.data?.message === tooManyAttemptsMsg)
+      ) {
+        toast.error(tooManyAttemptsMsg);
+      } else {
+        // Show backend message if available, otherwise generic
+        const errorMsg =
+          error.response?.data?.message ||
+          error.response?.data?.error ||
+          "Login failed. Please try again.";
+        toast.error(errorMsg);
+      }
     }
   };
 

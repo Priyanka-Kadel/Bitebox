@@ -73,20 +73,26 @@ const uploadImage = async (req, res, next) => {
 
 // Login a user
 const loginUser = async (req, res) => {
+    if (req.loginLimiter && req.loginLimiter.blocked) {
+        return res.status(429).json({ error: 'Too many login attempts. Please try again later.' });
+    }
     const { email, password } = req.body;
 
     if (!email || !password) {
+        if (req.loginLimiter) req.loginLimiter.increment();
         return res.status(400).json({ message: 'Email and password are required' });
     }
 
     try {
         const user = await User.findOne({ email });
         if (!user) {
+            if (req.loginLimiter) req.loginLimiter.increment();
             return res.status(400).json({ message: 'User does not exist' });
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
+            if (req.loginLimiter) req.loginLimiter.increment();
             return res.status(401).json({ success: false, message: 'Invalid email or password' });
         }
 
@@ -109,6 +115,8 @@ const loginUser = async (req, res) => {
         // Update user's token in database
         user.token = token;
         await user.save();
+
+        if (req.loginLimiter) req.loginLimiter.reset();
 
         res.status(200).json({ 
             success: true, 

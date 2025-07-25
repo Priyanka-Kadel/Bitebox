@@ -18,7 +18,6 @@ const SavedRecipesPage = () => {
           return;
         }
 
-        // Fetch all recipes and filter for saved ones
         let allRecipesResponse;
         try {
           const token = JSON.parse(localStorage.getItem("user") ?? '{}').token;

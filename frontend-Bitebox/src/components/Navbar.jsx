@@ -198,7 +198,7 @@ const Navbar = () => {
               </button>
               <button
                 onClick={() => setShowLogoutConfirm(false)}
-                className="bg-white border border-[#509343] hover:bg-gray-100 text-[#509343] px-6 py-2 rounded-lg font-semibold shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-[#509343] focus:ring-offset-2"
+                className="bg-white border border-[#034694] hover:bg-gray-100 text-[#034694] px-6 py-2 rounded-lg font-semibold shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-[#509343] focus:ring-offset-2"
               >
                 No
               </button>

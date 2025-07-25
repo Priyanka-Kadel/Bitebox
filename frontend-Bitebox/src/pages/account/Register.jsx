@@ -6,6 +6,28 @@ import "react-toastify/dist/ReactToastify.css";
 import registerIllustration from '../../assets/images/login.png';
 import { isPasswordStrong } from '../../utils/passwordValidation';
 
+const getPasswordStrength = (password) => {
+  let score = 0;
+  if (password.length >= 8) score++;
+  if (/[A-Z]/.test(password)) score++;
+  if (/[a-z]/.test(password)) score++;
+  if (/\d/.test(password)) score++;
+  if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) score++;
+  if (password.length >= 16) score++; // bonus for long passwords
+  if (password.length > 32) score = 0; // too long is invalid
+  if (score <= 2) return 'weak';
+  if (score <= 4) return 'medium';
+  return 'strong';
+};
+
+const passwordRequirements = [
+  { label: '8-32 characters', test: (pw) => pw.length >= 8 && pw.length <= 32 },
+  { label: 'At least one uppercase letter', test: (pw) => /[A-Z]/.test(pw) },
+  { label: 'At least one lowercase letter', test: (pw) => /[a-z]/.test(pw) },
+  { label: 'At least one number', test: (pw) => /\d/.test(pw) },
+  { label: 'At least one special character', test: (pw) => /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(pw) },
+];
+
 const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -43,12 +65,10 @@ const Register = () => {
       toast.error("Passwords do not match");
       return false;
     }
-
     if (!isPasswordStrong(formData.password)) {
       toast.error("Password must be 8 characters and must contain an uppercase, lower case, a number, and a special character.");
       return false;
     }
-
     return true;
   };
 
@@ -128,6 +148,7 @@ const Register = () => {
                   autoComplete="new-password"
                   required
                   onBlur={() => setPasswordTouched(true)}
+                  onFocus={() => setPasswordTouched(true)}
                 />
                 <button
                   type="button"
@@ -150,9 +171,34 @@ const Register = () => {
                   )}
                 </button>
               </div>
-              {!isPasswordStrong(formData.password) && passwordTouched && (
-                <div className="text-red-600 text-sm mt-1">
-                  Password must be 8 characters and must contain an uppercase, lower case, a number, and a special character.
+              {/* Password strength and requirements */}
+              {(passwordTouched || formData.password) && (
+                <div className="mt-2 ml-1">
+                  {/* Strength bar */}
+                  <div className="flex items-center mb-1">
+                    <span className={`h-2 w-16 rounded-full mr-2 
+                      ${getPasswordStrength(formData.password) === 'weak' ? 'bg-red-400' : ''}
+                      ${getPasswordStrength(formData.password) === 'medium' ? 'bg-yellow-400' : ''}
+                      ${getPasswordStrength(formData.password) === 'strong' ? 'bg-green-500' : ''}
+                    `}></span>
+                    <span className={`text-xs font-semibold 
+                      ${getPasswordStrength(formData.password) === 'weak' ? 'text-red-500' : ''}
+                      ${getPasswordStrength(formData.password) === 'medium' ? 'text-yellow-600' : ''}
+                      ${getPasswordStrength(formData.password) === 'strong' ? 'text-green-600' : ''}
+                    `}>
+                      {formData.password ? getPasswordStrength(formData.password).toUpperCase() : ''}
+                    </span>
+                  </div>
+                  {/* Requirements checklist */}
+                  <ul className="text-xs space-y-1">
+                    {passwordRequirements.map((req, idx) => (
+                      <li key={idx} className="flex items-center">
+                        <span className={`inline-block w-3 h-3 rounded-full mr-2 
+                          ${req.test(formData.password) ? 'bg-green-400' : 'bg-gray-300 border border-gray-400'}`}></span>
+                        <span className={req.test(formData.password) ? 'text-green-700' : 'text-gray-600'}>{req.label}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               )}
             </div>

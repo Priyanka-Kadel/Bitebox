@@ -11,10 +11,11 @@ const {
   verifyToken
 } = require("../controllers/authController");
 const { protect } = require("../middleware/auth");
+const { loginAttemptLimiter } = require("../middleware/rateLimiter");
 
 // Public routes
 router.post("/register", registerUser);
-router.post("/login", loginUser);
+router.post("/login", loginAttemptLimiter, loginUser);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
 
