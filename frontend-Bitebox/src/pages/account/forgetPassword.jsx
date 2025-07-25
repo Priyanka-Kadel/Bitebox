@@ -13,7 +13,7 @@ const ForgotPassword = () => {
     console.log("handleSubmit called");
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/forgot-password",
+        "https://localhost:3000/api/auth/forgot-password",
         { email }
       );
       console.log("Backend response:", response.data);

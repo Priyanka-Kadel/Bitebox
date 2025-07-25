@@ -34,13 +34,13 @@ exports.createOrder = async (req, res, next) => {
 
     const formData = {
       amount: amount,
-      failure_url: `http://localhost:5173/failure`,
+      failure_url: `https://localhost:5173/failure`,
       product_delivery_charge: "0",
       product_service_charge: "0",
       product_code: "EPAYTEST",
       signature: signature,
       signed_field_names: "total_amount,transaction_uuid,product_code",
-      success_url: `http://localhost:5173/success`,
+      success_url: `https://localhost:5173/success`,
       tax_amount: "0",
       total_amount: amount,
       transaction_uuid: transactionUuid,
@@ -101,13 +101,13 @@ exports.createOrderFromCart = async (req, res, next) => {
 
     const formData = {
       amount: cart.totalAmount,
-      failure_url: `http://localhost:5173/failure`,
+      failure_url: `https://localhost:5173/failure`,
       product_delivery_charge: "0",
       product_service_charge: "0",
       product_code: "EPAYTEST",
       signature: signature,
       signed_field_names: "total_amount,transaction_uuid,product_code",
-      success_url: `http://localhost:5173/success`,
+      success_url: `https://localhost:5173/success`,
       tax_amount: "0",
       total_amount: cart.totalAmount,
       transaction_uuid: transactionUuid,
@@ -159,10 +159,10 @@ exports.verifyPayment = async (req, res, next) => {
 
     if (decodedData.status !== "COMPLETE") {
       console.log("The status is not complete");
-      return res.redirect(`http://localhost:3000/failure`);
+      return res.redirect(`https://localhost:3000/failure`);
     }
 
-    res.redirect("http://localhost:3000/success");
+    res.redirect("https://localhost:3000/success");
   } catch (err) {
     console.log(err.message);
     return res.status(400).json({ error: err?.message || "No Orders found" });

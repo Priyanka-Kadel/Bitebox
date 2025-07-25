@@ -14,7 +14,7 @@ const Recipes = () => {
     const fetchRecipes = async () => {
       try {
         const token = JSON.parse(localStorage.getItem("user") ?? '{}').token;
-        const response = await fetch("http://localhost:3000/api/recipes", {
+        const response = await fetch("https://localhost:3000/api/recipes", {
           headers: token ? {
             Authorization: `Bearer ${token}`
           } : {}
@@ -128,7 +128,7 @@ const Recipes = () => {
             >
               <div className="relative">
                 <img 
-                  src={`http://localhost:3000/${recipe.recipeImage}`} 
+                  src={`https://localhost:3000/${recipe.recipeImage}`} 
                   alt={recipe.title} 
                   className="w-full h-48 object-cover rounded-lg mb-3 transition-transform duration-300 group-hover:scale-105" 
                 />

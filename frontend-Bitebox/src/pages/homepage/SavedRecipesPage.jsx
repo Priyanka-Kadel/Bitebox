@@ -22,14 +22,14 @@ const SavedRecipesPage = () => {
         try {
           const token = JSON.parse(localStorage.getItem("user") ?? '{}').token;
           allRecipesResponse = await axios.get(
-            "http://localhost:3000/api/recipes",
+            "https://localhost:3000/api/recipes",
             {
               headers: token ? { Authorization: `Bearer ${token}` } : {}
             }
           );
         } catch (error) {
           // If auth fails, try without auth
-          allRecipesResponse = await axios.get("http://localhost:3000/api/recipes");
+          allRecipesResponse = await axios.get("https://localhost:3000/api/recipes");
         }
 
         const allRecipes = allRecipesResponse.data;
@@ -88,7 +88,7 @@ const SavedRecipesPage = () => {
                   {/* Recipe Image */}
                   <div className="relative">
                     <img
-                      src={`http://localhost:3000/${recipe.recipeImage}`}
+                      src={`https://localhost:3000/${recipe.recipeImage}`}
                       alt={recipe.title}
                       className="w-full h-48 object-cover"
                     />

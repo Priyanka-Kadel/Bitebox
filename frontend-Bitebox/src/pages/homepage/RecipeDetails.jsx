@@ -37,14 +37,14 @@ const RecipeDetails = () => {
         try {
           const token = JSON.parse(localStorage.getItem("user") ?? '{}').token;
           recipeResponse = await axios.get(
-            `http://localhost:3000/api/recipes/${id}`,
+            `https://localhost:3000/api/recipes/${id}`,
             {
               headers: token ? { Authorization: `Bearer ${token}` } : {}
             }
           );
         } catch (error) {
           recipeResponse = await axios.get(
-            `http://localhost:3000/api/recipes/${id}`
+            `https://localhost:3000/api/recipes/${id}`
           );
         }
         setRecipe(recipeResponse.data);
@@ -204,7 +204,7 @@ const RecipeDetails = () => {
         {/* Right: Image */}
         <div className="flex-shrink-0 flex items-start justify-center">
           <img
-            src={recipe.recipeImage ? `http://localhost:3000/${recipe.recipeImage}` : "/src/assets/images/meal.png"}
+            src={recipe.recipeImage ? `https://localhost:3000/${recipe.recipeImage}` : "/src/assets/images/meal.png"}
             alt={recipe.title}
             className="rounded-xl shadow w-[350px] h-[260px] object-cover border border-gray-300"
           />

@@ -39,7 +39,7 @@ const AdminDashboard = () => {
         const token = getAuthToken();
         console.log('Fetching users with token:', token ? 'Token exists' : 'No token');
         
-        const response = await fetch("http://localhost:3000/api/user/customer", {
+        const response = await fetch("https://localhost:3000/api/user/customer", {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -79,7 +79,7 @@ const AdminDashboard = () => {
         const token = getAuthToken();
         console.log('Fetching recipes with token:', token ? 'Token exists' : 'No token');
         
-        const response = await fetch("http://localhost:3000/api/recipes", {
+        const response = await fetch("https://localhost:3000/api/recipes", {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -118,7 +118,7 @@ const AdminDashboard = () => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       try {
         const token = getAuthToken();
-        const response = await fetch(`http://localhost:3000/api/user/delete/${userId}`, {
+        const response = await fetch(`https://localhost:3000/api/user/delete/${userId}`, {
           method: "DELETE",
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -150,7 +150,7 @@ const AdminDashboard = () => {
     
     try {
       const token = getAuthToken();
-      const response = await fetch(`http://localhost:3000/api/recipes/${recipeToDelete._id}`, {
+      const response = await fetch(`https://localhost:3000/api/recipes/${recipeToDelete._id}`, {
         method: "DELETE",
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -301,7 +301,7 @@ const AdminDashboard = () => {
                           <td className="px-4 py-3 border border-gray-200">
                             {recipe.recipeImage && (
                               <img
-                                src={`http://localhost:3000/${recipe.recipeImage}`}
+                                src={`https://localhost:3000/${recipe.recipeImage}`}
                                 alt="Recipe"
                                 className="w-16 h-16 object-cover rounded-lg"
                               />

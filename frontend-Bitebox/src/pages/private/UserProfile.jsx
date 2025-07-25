@@ -39,10 +39,10 @@ const UserProfile = () => {
         
         if (token) {
           const endpoints = [
-            "http://localhost:3000/api/user/profile",
-            "http://localhost:3000/api/user/me",
-            "http://localhost:3000/api/auth/profile",
-            "http://localhost:3000/api/user/customer"
+            "https://localhost:3000/api/user/profile",
+            "https://localhost:3000/api/user/me",
+            "https://localhost:3000/api/auth/profile",
+            "https://localhost:3000/api/user/customer"
           ];
 
           let userData = null;

@@ -25,7 +25,7 @@ const Dashboard = () => {
       }
     }
 
-    fetch("http://localhost:3000/api/recipes", {
+    fetch("https://localhost:3000/api/recipes", {
       headers: {
         Authorization: `Bearer ${JSON.parse(localStorage.getItem("user") ?? '{}').token}`
       },
@@ -145,7 +145,7 @@ const Dashboard = () => {
                 className="bg-white border border-gray-200 rounded-2xl shadow-lg overflow-hidden flex flex-col transition-transform hover:scale-105"
               >
                 <img
-                  src={`http://localhost:3000/${recipe.recipeImage}`}
+                  src={`https://localhost:3000/${recipe.recipeImage}`}
                   alt="Recipe"
                   className="w-full h-48 object-cover"
                 />

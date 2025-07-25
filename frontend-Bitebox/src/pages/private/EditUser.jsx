@@ -9,7 +9,7 @@ const EditUser = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/api/user/${id}`, {
+    fetch(`https://localhost:3000/api/user/${id}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -38,7 +38,7 @@ const EditUser = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `http://localhost:3000/api/user/update/${id}`,
+        `https://localhost:3000/api/user/update/${id}`,
         {
           method: "PUT",
           headers: {

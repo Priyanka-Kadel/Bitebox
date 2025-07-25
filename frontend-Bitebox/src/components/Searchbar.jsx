@@ -44,7 +44,7 @@ const SearchBar = ({ recipes }) => {
               className="flex items-center p-4 hover:bg-orange-50 transition-colors duration-200 border-b border-gray-100 last:border-b-0"
             >
               <img
-                src={`http://localhost:3000/${recipe.recipeImage}`}
+                src={`https://localhost:3000/${recipe.recipeImage}`}
                 alt="Recipe"
                 className="w-16 h-16 object-cover rounded-lg mr-4"
               />

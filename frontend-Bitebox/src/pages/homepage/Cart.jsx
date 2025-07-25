@@ -114,7 +114,7 @@ const Cart = () => {
                 className="relative flex items-start space-x-4 p-4 border border-[#034694]/20 rounded-xl bg-[#eaf1fa] min-h-[100px]"
               >
                 <img
-                  src={`http://localhost:3000/${item.image}`}
+                  src={`https://localhost:3000/${item.image}`}
                   alt={item.title}
                   className="w-20 h-20 object-cover rounded-lg border border-[#509343]/30 mt-1"
                 />

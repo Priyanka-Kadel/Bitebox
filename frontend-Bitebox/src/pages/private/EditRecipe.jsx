@@ -26,7 +26,7 @@ const EditRecipe = () => {
     // Fetch recipe data
     const fetchRecipe = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/recipes/${id}`, {
+        const response = await fetch(`https://localhost:3000/api/recipes/${id}`, {
           headers: {
             Authorization: `Bearer ${JSON.parse(localStorage.getItem("user") ?? '{}').token}`
           }
@@ -165,7 +165,7 @@ const EditRecipe = () => {
         formDataToSend.append("recipeImage", recipeImage);
       }
 
-      const response = await fetch(`http://localhost:3000/api/recipes/${id}`, {
+      const response = await fetch(`https://localhost:3000/api/recipes/${id}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${JSON.parse(localStorage.getItem("user") ?? '{}').token}`

@@ -97,7 +97,7 @@ const AddRecipes = () => {
     
     try {
       console.log('Testing token with a simple API call...');
-      const response = await fetch("http://localhost:3000/api/recipes", {
+      const response = await fetch("https://localhost:3000/api/recipes", {
         method: "GET",
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -295,7 +295,7 @@ const AddRecipes = () => {
         steps: validSteps
       });
 
-      const response = await fetch("http://localhost:3000/api/recipes", {
+      const response = await fetch("https://localhost:3000/api/recipes", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

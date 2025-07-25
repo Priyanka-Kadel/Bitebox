@@ -386,7 +386,7 @@ const Checkout = () => {
                   {cartItems.map((item) => (
                     <div key={item.recipeId} className="flex items-center space-x-3">
                       <img
-                        src={`http://localhost:3000/${item.image}`}
+                        src={`https://localhost:3000/${item.image}`}
                         alt={item.title}
                         className="w-12 h-12 object-cover rounded-lg"
                       />
