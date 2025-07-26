@@ -8,7 +8,9 @@ const {
   resetPassword,
   uploadImage,
   refreshToken,
-  verifyToken
+  verifyToken,
+  verifyEmail,
+  resendVerification
 } = require("../controllers/authController");
 const { protect } = require("../middleware/auth");
 const { loginAttemptLimiter } = require("../middleware/rateLimiter");
@@ -22,5 +24,7 @@ router.post("/reset-password", resetPassword);
 // Protected routes
 router.post("/refresh-token", refreshToken);
 router.post("/verify-token", verifyToken);
+router.post("/verify-email", verifyEmail);
+router.post("/resend-verification", resendVerification);
 
 module.exports = router;

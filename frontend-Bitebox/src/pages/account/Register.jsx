@@ -38,6 +38,7 @@ const Register = () => {
   const [passwordTouched, setPasswordTouched] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
   const handleChange = (e) => {
@@ -75,29 +76,34 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-
     if (validateForm()) {
+      setIsSubmitting(true);
       try {
-     
+        // First, send registration data to get verification token
         const response = await axios.post(
           "https://localhost:3000/api/auth/register",
           formData
         );
 
         if (response.data.success) {
-          toast.success("User registered successfully!"); 
-          setFormData({
-            name: "",
-            email: "",
-            password: "",
-            confirmPassword: "",
+          toast.success("Verification code sent to your email!");
+          
+          // Navigate to email verification page with user data
+          navigate("/email-verification", {
+            state: {
+              userData: {
+                name: formData.name,
+                email: formData.email
+              }
+            }
           });
-          navigate("/login"); 
         }
       } catch (error) {
         const errorMsg =
           error.response?.data?.message || "Something went wrong!";
         toast.error(errorMsg);
+      } finally {
+        setIsSubmitting(false);
       }
     }
   };
@@ -107,7 +113,10 @@ const Register = () => {
       <div className="flex-grow flex flex-col md:flex-row items-center justify-center px-4 py-8 w-full gap-x-12">
         {/* Right: Register Form */}
         <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-10 bg-white/95 rounded-3xl shadow-2xl border border-[#034694]/20 max-w-md md:mr-8">
-          <h2 className="text-3xl font-extrabold text-center text-black mb-8 tracking-tight">Create Account</h2>
+          <h2 className="text-3xl font-extrabold text-center text-black mb-4 tracking-tight">Create Account</h2>
+          <p className="text-center text-gray-600 mb-6 text-sm">
+            We'll send a verification code to your email to secure your account
+          </p>
           <form onSubmit={handleSubmit} className="space-y-7">
             <div>
               <label htmlFor="name" className="block text-base font-semibold text-black mb-1">Name</label>
@@ -238,9 +247,10 @@ const Register = () => {
             </div>
             <button
               type="submit"
-              className="w-full py-2 px-4 bg-[#034694] hover:bg-[#034694]/80 text-white font-bold rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-[#034694] transition text-lg"
+              disabled={isSubmitting}
+              className="w-full py-2 px-4 bg-[#034694] hover:bg-[#034694]/80 disabled:bg-gray-400 text-white font-bold rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-[#034694] transition text-lg"
             >
-              Register
+              {isSubmitting ? "Sending Verification..." : "Register"}
             </button>
           </form>
           <div className="flex flex-col gap-2 mt-6">

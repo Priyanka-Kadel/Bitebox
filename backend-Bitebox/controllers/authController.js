@@ -5,6 +5,7 @@ const randomstring = require('randomstring');
 const User = require('../models/User');
 const config = require('../config/config');
 const { isPasswordStrong, isPasswordReused } = require('../utils/passwordUtils');
+const { sendVerificationEmail } = require('../utils/email');
 
 const PASSWORD_HISTORY_LIMIT = 3;
 const PASSWORD_EXPIRY_DAYS = 90;
@@ -23,6 +24,9 @@ const registerUser = async (req, res) => {
         return res.status(400).json({ message: "Email already exists" });
       }
   
+      const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+      const verificationExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 min
+
       const user = new User({
         name,
         email,
@@ -30,6 +34,9 @@ const registerUser = async (req, res) => {
         confirm_password,
         role,
         image,
+        isEmailVerified: false,
+        emailVerificationCode: verificationCode,
+        emailVerificationExpires: verificationExpires,
       });
   
       const tokenExpiration = role === 'admin' ? '7d' : '24h';
@@ -41,15 +48,15 @@ const registerUser = async (req, res) => {
   
       user.token = token;
       await user.save();
-  
-      res.status(201).json({
-        success: true,
-        message: "User registered successfully!",
-        token,
-        role: user.role,
-        name: user.name,
-        _id: user._id
-      });
+
+      try {
+        await sendVerificationEmail(email, verificationCode);
+        res.status(201).json({ success: true, message: "Check your email for the verification code.", userData: { email: user.email } });
+      } catch (emailError) {
+        console.error('Email sending failed:', emailError.message);
+        await User.findByIdAndDelete(user._id); // Optional: clean up
+        res.status(500).json({ message: "Error sending verification email. Please try again.", error: emailError.message });
+      }
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Error registering user", error });
@@ -82,6 +89,10 @@ const loginUser = async (req, res) => {
         if (!user) {
             if (req.loginLimiter) req.loginLimiter.increment();
             return res.status(400).json({ message: 'User does not exist' });
+        }
+
+        if (!user.isEmailVerified) {
+            return res.status(403).json({ success: false, message: "Please verify your email before logging in." });
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -328,6 +339,36 @@ const changePassword = async (req, res) => {
   }
 };
 
+const verifyEmail = async (req, res) => {
+  const { email, verificationToken } = req.body;
+  const user = await User.findOne({ email });
+
+  if (!user || user.emailVerificationCode !== verificationToken || user.emailVerificationExpires < new Date()) {
+    return res.status(400).json({ success: false, message: "Invalid or expired code" });
+  }
+
+  user.isEmailVerified = true;
+  user.emailVerificationCode = undefined;
+  user.emailVerificationExpires = undefined;
+  await user.save();
+
+  res.json({ success: true, message: "Email verified!" });
+};
+
+const resendVerification = async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) return res.status(404).json({ success: false, message: "User not found" });
+
+  const code = Math.floor(100000 + Math.random() * 900000).toString();
+  user.emailVerificationCode = code;
+  user.emailVerificationExpires = new Date(Date.now() + 10 * 60 * 1000);
+  await user.save();
+  await sendVerificationEmail(email, code);
+
+  res.json({ success: true, message: "Verification code resent." });
+};
+
 module.exports = {
     registerUser,
     loginUser,
@@ -337,5 +378,7 @@ module.exports = {
     uploadImage,
     refreshToken,
     verifyToken,
-    changePassword
+    changePassword,
+    verifyEmail,
+    resendVerification
 };

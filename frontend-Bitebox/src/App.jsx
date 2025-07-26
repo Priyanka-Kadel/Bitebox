@@ -7,6 +7,7 @@ import ForgotPassword from "./pages/account/forgetPassword.jsx";
 import Login from "./pages/account/Login";
 import Register from "./pages/account/Register";
 import ResetPassword from "./pages/account/resetPassword.jsx";
+import EmailVerification from "./pages/account/EmailVerification.jsx";
 import AboutUs from "./pages/homepage/AboutUs.jsx";
 import ContactUs from "./pages/homepage/ContactUs.jsx";
 import Dashboard from "./pages/homepage/Dashboard.jsx";
@@ -49,6 +50,7 @@ function App() {
             <Route path="/searchbar" element={<SearchBar />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/email-verification" element={<EmailVerification />} />
             <Route path="/edit-profile/:id" element={<EditProfile />} />
             <Route path="/adminDash" element={<AdminRoute />}>
               <Route index element={<AdminDashboard />} />

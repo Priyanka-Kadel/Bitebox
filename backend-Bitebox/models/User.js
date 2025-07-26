@@ -47,7 +47,10 @@ const userSchema = new mongoose.Schema({
     phone: {
         type: String,
         trim: true
-    }
+    },
+    isEmailVerified: { type: Boolean, default: false },
+    emailVerificationCode: { type: String },
+    emailVerificationExpires: { type: Date },
 }, { timestamps: true });
 
 // Encrypt password using bcrypt
