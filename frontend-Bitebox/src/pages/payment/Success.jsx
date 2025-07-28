@@ -24,7 +24,7 @@ const Success = () => {
       day: "numeric"
     }));
 
-    // If we have orderId from URL (eSewa redirect), fetch order details
+
     if (orderIdFromUrl && !order) {
       setLoading(true);
       fetchOrderDetails(orderIdFromUrl);

@@ -13,7 +13,7 @@ const Dashboard = () => {
   const [popularIndex, setPopularIndex] = useState(0);
   const [user, setUser] = useState(null);
   const [showCaptcha, setShowCaptcha] = useState(false);
-  const [captchaType, setCaptchaType] = useState('question'); // 'question' or 'slider'
+  const [captchaType, setCaptchaType] = useState('question');
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [userAnswer, setUserAnswer] = useState('');
   const [error, setError] = useState('');
@@ -23,7 +23,6 @@ const Dashboard = () => {
   const [sliderTolerance] = useState(5);
   const navigate = useNavigate();
 
-  // Array of different types of questions with random order
   const questions = [
     // Math questions
     {
@@ -146,9 +145,9 @@ const Dashboard = () => {
   };
 
   const generateSliderPuzzle = () => {
-    const newTargetValue = Math.floor(Math.random() * 81) + 10; // Random value between 10-90
+    const newTargetValue = Math.floor(Math.random() * 81) + 10;
     setTargetValue(newTargetValue);
-    setSliderValue(50); // Reset slider to middle
+    setSliderValue(50);
     setError('');
   };
 
@@ -156,7 +155,6 @@ const Dashboard = () => {
     e.preventDefault();
     setShowCaptcha(true);
     
-    // Randomly choose between question and slider captcha
     const randomType = Math.random() < 0.5 ? 'question' : 'slider';
     setCaptchaType(randomType);
     
@@ -182,7 +180,6 @@ const Dashboard = () => {
     setIsLoading(true);
     
     if (captchaType === 'question') {
-      // Question captcha logic
       if (!userAnswer) {
         setError('Please select an answer.');
         setIsLoading(false);
@@ -201,7 +198,7 @@ const Dashboard = () => {
         setUserAnswer('');
       }
     } else {
-      // Slider captcha logic
+
       const difference = Math.abs(sliderValue - targetValue);
       if (difference <= sliderTolerance) {
         setTimeout(() => {
@@ -260,7 +257,7 @@ const Dashboard = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        // Ensure data is an array before setting it
+
         if (Array.isArray(data)) {
           setRecipes(data);
         } else {

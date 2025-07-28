@@ -15,7 +15,7 @@ const RecipeDetails = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Force refresh by adding a timestamp if not present
+
     if (!window.location.search) {
       const timestamp = Date.now();
       window.history.replaceState(null, '', `${window.location.pathname}?refresh=${timestamp}`);
@@ -56,9 +56,9 @@ const RecipeDetails = () => {
       }
     };
     fetchData();
-  }, [id, window.location.search]); // Add location.search to force refresh when URL changes
+  }, [id, window.location.search]); 
 
-  // --- Buy Ingredients Functionality ---
+
   const addToCart = () => {
     if (!user) {
       toast.error("Please log in to add recipes to your cart!");
@@ -110,7 +110,7 @@ const RecipeDetails = () => {
     );
   }
 
-  // Helper: split ingredients into 3 columns for desktop
+
   const getIngredientColumns = (ingredients) => {
     const cols = [[], [], []];
     ingredients.forEach((item, idx) => {
