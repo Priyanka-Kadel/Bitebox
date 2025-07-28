@@ -1,18 +1,37 @@
+// var express = require("express");
+// const {
+//   createOrder,
+//   verifyPayment,
+// } = require("../controllers/esewaController");
+// var router = express.Router();
+ 
+// // Route to handle the successful payment from Esewa
+// router.get("/success", verifyPayment);
+ 
+// // Route to create a new order and initiate the payment process
+// router.post("/create/:id", createOrder);
+ 
+// // Route to handle the failed payment from Esewa
+// // router.get("/failure", handleEsewaFailure);
+ 
+// module.exports = router;
+
+
+
 var express = require("express");
 const {
   createOrder,
-  createOrderFromCart,
+  createOrderFromCart,  // <-- import the new function
   verifyPayment,
 } = require("../controllers/esewaController");
-const { protect } = require("../middleware/auth");
 var router = express.Router();
-
-router.post("/create/:id", protect, createOrder);
-
-router.post("/create-from-cart", protect, createOrderFromCart);
 
 // Route to handle the successful payment from Esewa
 router.get("/success", verifyPayment);
+
+// Route to create a new order and initiate the payment process
+router.post("/create/:id", createOrder);
+router.post("/createFromCart", createOrderFromCart);  // <-- fixed to use createOrderFromCart
 
 // Route to handle the failed payment from Esewa
 // router.get("/failure", handleEsewaFailure);

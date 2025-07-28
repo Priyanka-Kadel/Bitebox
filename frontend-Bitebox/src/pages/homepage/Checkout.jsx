@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaArrowLeft, FaMapMarkerAlt, FaPhone, FaEnvelope, FaCreditCard, FaLock, FaUser } from "react-icons/fa";
+import axios from "axios";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -18,6 +19,26 @@ const Checkout = () => {
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const [isProcessing, setIsProcessing] = useState(false);
   const [user, setUser] = useState(null);
+
+  // Add the esewaCall function
+  const esewaCall = (formData) => {
+    console.log("Form data to eSewa:", formData); // <-- Add this line
+    const path = "https://rc-epay.esewa.com.np/api/epay/main/v2/form";
+    const form = document.createElement("form");
+    form.setAttribute("method", "POST");
+    form.setAttribute("action", path);
+
+    for (var key in formData) {
+      const hiddenField = document.createElement("input");
+      hiddenField.setAttribute("type", "hidden");
+      hiddenField.setAttribute("name", key);
+      hiddenField.setAttribute("value", formData[key]);
+      form.appendChild(hiddenField);
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+  };
 
   useEffect(() => {
     // Check if user is logged in
@@ -131,9 +152,6 @@ const Checkout = () => {
     setIsProcessing(true);
 
     try {
-      // Simulate order processing
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
       // Create order object
       const order = {
         id: Date.now().toString(),
@@ -145,6 +163,10 @@ const Checkout = () => {
         createdAt: new Date().toISOString()
       };
 
+      // Only handle Cash on Delivery
+      // Simulate order processing
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
       const orders = JSON.parse(localStorage.getItem("orders") || "[]");
       orders.push(order);
       localStorage.setItem("orders", JSON.stringify(orders));
@@ -166,6 +188,55 @@ const Checkout = () => {
     } catch (error) {
       console.error("Error processing order:", error);
       alert("There was an error processing your order. Please try again.");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleEsewaPayment = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsProcessing(true);
+
+    try {
+      // Create order object
+      const order = {
+        id: Date.now().toString(),
+        items: cartItems,
+        customerInfo: formData,
+        paymentMethod: "esewa",
+        total: getTotalPrice(),
+        status: "paid",
+        createdAt: new Date().toISOString()
+      };
+
+      // Simulate eSewa payment processing
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      const orders = JSON.parse(localStorage.getItem("orders") || "[]");
+      orders.push(order);
+      localStorage.setItem("orders", JSON.stringify(orders));
+
+      const userCartKey = `cart_${user.id}`;
+      localStorage.removeItem(userCartKey);
+
+      const event = new CustomEvent('cartUpdated', { detail: 0 });
+      window.dispatchEvent(event);
+
+      // Redirect to success page
+      navigate("/success", { 
+        state: { 
+          orderId: order.id,
+          orderDetails: order 
+        } 
+      });
+
+    } catch (error) {
+      console.error("Error processing eSewa payment:", error);
+      alert("There was an error processing your eSewa payment. Please try again.");
     } finally {
       setIsProcessing(false);
     }
@@ -357,7 +428,6 @@ const Checkout = () => {
                       <div className="text-sm text-gray-500">Pay when you receive your order</div>
                     </div>
                   </label>
-                  
                   <label className="flex items-center p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50">
                     <input
                       type="radio"
@@ -420,23 +490,44 @@ const Checkout = () => {
                 </div>
                 
                 {/* Place Order Button */}
-                <button
-                  type="submit"
-                  disabled={isProcessing}
-                  className="w-full bg-[#034694] hover:bg-[#012147] disabled:bg-gray-400 text-white py-3 px-6 rounded-xl font-semibold transition-colors duration-200 flex items-center justify-center"
-                >
-                  {isProcessing ? (
-                    <>
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                      Processing...
-                    </>
-                  ) : (
-                    <>
-                      <FaLock className="mr-2" />
-                      Place Order - ₹{getTotalPrice()}
-                    </>
-                  )}
-                </button>
+                <div className="flex flex-col gap-3">
+                  <button
+                    type="submit"
+                    disabled={isProcessing || paymentMethod !== "cod"}
+                    className={`w-full bg-[#034694] hover:bg-[#012147] disabled:bg-gray-400 text-white py-3 px-6 rounded-xl font-semibold transition-colors duration-200 flex items-center justify-center ${paymentMethod !== "cod" ? "opacity-50 cursor-not-allowed" : ""}`}
+                    onClick={() => setPaymentMethod("cod")}
+                  >
+                    {isProcessing && paymentMethod === "cod" ? (
+                      <>
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                        Processing...
+                      </>
+                    ) : (
+                      <>
+                        <FaLock className="mr-2" />
+                        Place Order - ₹{getTotalPrice()}
+                      </>
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    disabled={isProcessing || paymentMethod !== "esewa"}
+                    className={`w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white py-3 px-6 rounded-xl font-semibold transition-colors duration-200 flex items-center justify-center ${paymentMethod !== "esewa" ? "opacity-50 cursor-not-allowed" : ""}`}
+                    onClick={handleEsewaPayment}
+                  >
+                    {isProcessing && paymentMethod === "esewa" ? (
+                      <>
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                        Redirecting to eSewa...
+                      </>
+                    ) : (
+                      <>
+                        <FaLock className="mr-2" />
+                        Pay with eSewa - ₹{getTotalPrice()}
+                      </>
+                    )}
+                  </button>
+                </div>
                 
                 {/* Security Notice */}
                 <div className="mt-4 text-center">
@@ -453,4 +544,4 @@ const Checkout = () => {
   );
 };
 
-export default Checkout; 
+export default Checkout;

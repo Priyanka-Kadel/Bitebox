@@ -1,3 +1,4 @@
+require("dotenv").config();
 const path = require("path");
 // const express = require("express");
 // const cors = require("cors");
@@ -122,6 +123,7 @@ const wishlistRoutes = require("./routes/wishlistRoutes");
 const emailRoutes = require('./routes/emailRoutes');
 const contactRoutes = require('./routes/contactRoutes');
 const esewaRoutes = require('./routes/esewaRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -147,6 +149,7 @@ app.use('/api', wishlistRoutes);
 app.use('/api/email', emailRoutes);
 app.use('/api', contactRoutes);
 app.use('/api/esewa', esewaRoutes);
+app.use('/api/orders', orderRoutes);
 app.use("/uploads", express.static("uploads"));
 
 // Load HTTPS credentials

@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import tickGif from "../../assets/images/tick.gif";
 
 const Success = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [deliveryDate, setDeliveryDate] = useState("");
+  const [order, setOrder] = useState(location.state?.orderDetails);
+  const [loading, setLoading] = useState(false);
 
-  const order = location.state?.orderDetails;
+  // Get orderId from URL params (for eSewa redirects)
+  const urlParams = new URLSearchParams(location.search);
+  const orderIdFromUrl = urlParams.get('orderId');
 
   useEffect(() => {
     const tomorrow = new Date();
@@ -19,11 +24,39 @@ const Success = () => {
       day: "numeric"
     }));
 
+    // If we have orderId from URL (eSewa redirect), fetch order details
+    if (orderIdFromUrl && !order) {
+      setLoading(true);
+      fetchOrderDetails(orderIdFromUrl);
+    }
+
     const timer = setTimeout(() => {
       navigate("/");
     }, 10000);
     return () => clearTimeout(timer);
-  }, [navigate]);
+  }, [navigate, orderIdFromUrl, order]);
+
+  const fetchOrderDetails = async (orderId) => {
+    try {
+      const response = await axios.get(`https://localhost:3000/api/orders/${orderId}/status`);
+      if (response.data.success) {
+        setOrder(response.data.order);
+      }
+    } catch (error) {
+      console.error('Error fetching order details:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-white">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-[#034694] mb-6"></div>
+        <p className="text-gray-700">Loading order details...</p>
+      </div>
+    );
+  }
 
   if (!order) {
     return (
