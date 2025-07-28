@@ -56,6 +56,7 @@ export default defineConfig({
         target: 'https://localhost:3000', // Backend URL (make sure backend is also running on HTTPS)
         changeOrigin: true,
         secure: false, // Accept self-signed certificates from backend
+        rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
   },
