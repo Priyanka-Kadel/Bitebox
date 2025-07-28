@@ -13,18 +13,17 @@ const EmailVerification = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Get user data from location state (passed from Register component)
   const userData = location.state?.userData;
 
   useEffect(() => {
-    // If no user data, redirect to register
+
     if (!userData) {
       toast.error("Please complete registration first");
       navigate("/register");
       return;
     }
 
-    // Start countdown for resend button
+
     if (countdown > 0) {
       const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
       return () => clearTimeout(timer);

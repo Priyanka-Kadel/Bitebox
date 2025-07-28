@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import forgotBg from "../../assets/images/for.png"; // Import the local image
+import forgotBg from "../../assets/images/for.png";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");

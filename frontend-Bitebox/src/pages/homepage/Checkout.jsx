@@ -22,7 +22,7 @@ const Checkout = () => {
 
   // Add the esewaCall function
   const esewaCall = (formData) => {
-    console.log("Form data to eSewa:", formData); // <-- Add this line
+    console.log("Form data to eSewa:", formData); 
     const path = "https://rc-epay.esewa.com.np/api/epay/main/v2/form";
     const form = document.createElement("form");
     form.setAttribute("method", "POST");

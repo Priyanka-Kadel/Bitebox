@@ -12,7 +12,7 @@ const AdminRoute = () => {
   const navigate = useNavigate();
   const user = getUser();
 
-  // 1. If not logged in, redirect with state (do NOT dispatch event here)
+  // 1. If not logged in, redirect with state
   if (!user) {
     return <Navigate to="/login" state={{ from: location, adminOnly: true }} replace />;
   }
@@ -22,12 +22,12 @@ const AdminRoute = () => {
     return <Outlet />;
   }
 
-  // 3. If user is non-admin, show toast via event and go back
+
   if (user && user.role !== "admin") {
-    navigate(-1); // or to any route you want
+    navigate(-1);
     setTimeout(() => {
       window.dispatchEvent(new Event('admin-access-denied'));
-    }, 50); // Short delay to ensure navigation completes
+    }, 50); 
     return null;
   }
 };

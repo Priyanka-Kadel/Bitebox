@@ -16,7 +16,7 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Show admin access denied toast if redirected from admin route
+
   React.useEffect(() => {
     if (location.state?.adminOnly) {
       window.dispatchEvent(new Event('admin-access-denied'));

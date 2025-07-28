@@ -13,8 +13,8 @@ const getPasswordStrength = (password) => {
   if (/[a-z]/.test(password)) score++;
   if (/\d/.test(password)) score++;
   if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) score++;
-  if (password.length >= 16) score++; // bonus for long passwords
-  if (password.length > 32) score = 0; // too long is invalid
+  if (password.length >= 16) score++; 
+  if (password.length > 32) score = 0; 
   if (score <= 2) return 'weak';
   if (score <= 4) return 'medium';
   return 'strong';
@@ -79,7 +79,7 @@ const Register = () => {
     if (validateForm()) {
       setIsSubmitting(true);
       try {
-        // First, send registration data to get verification token
+
         const response = await axios.post(
           "https://localhost:3000/api/auth/register",
           formData
@@ -88,7 +88,6 @@ const Register = () => {
         if (response.data.success) {
           toast.success("Verification code sent to your email!");
           
-          // Navigate to email verification page with user data
           navigate("/email-verification", {
             state: {
               userData: {
