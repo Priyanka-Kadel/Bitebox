@@ -104,9 +104,8 @@
 const crypto = require("crypto");
 const { v4 } = require("uuid");
 
-// Use environment variables for secret and URLs
 const CLIENT_URL = process.env.CLIENT_URL || "https://localhost:5173";
-const SECRET_KEY = process.env.ESEWA_SECRET || "8gBm/:&EnhH.1/q"; // fallback only for dev
+const SECRET_KEY = process.env.ESEWA_SECRET || "8gBm/:&EnhH.1/q";
 
 exports.createOrder = async (req, res, next) => {
   try {
@@ -179,7 +178,7 @@ exports.createOrderFromCart = async (req, res, next) => {
       return res.status(400).json({ message: "Amount is required" });
     }
 
-    // Generate transaction UUID without recipeId prefix
+
     const transactionUuid = v4();
 
     const signed_field_names = [
@@ -259,7 +258,6 @@ exports.verifyPayment = async (req, res, next) => {
     const recipeId = decodedData.transaction_uuid.split("-")[0];
     console.log("Verified Recipe ID:", recipeId);
 
-    // TODO: Store order in database or mark payment as completed
 
     res.redirect(`${CLIENT_URL}/success`);
 

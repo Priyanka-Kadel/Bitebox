@@ -21,7 +21,7 @@
 var express = require("express");
 const {
   createOrder,
-  createOrderFromCart,  // <-- import the new function
+  createOrderFromCart,  
   verifyPayment,
 } = require("../controllers/esewaController");
 var router = express.Router();
@@ -31,7 +31,7 @@ router.get("/success", verifyPayment);
 
 // Route to create a new order and initiate the payment process
 router.post("/create/:id", createOrder);
-router.post("/createFromCart", createOrderFromCart);  // <-- fixed to use createOrderFromCart
+router.post("/createFromCart", createOrderFromCart); 
 
 // Route to handle the failed payment from Esewa
 // router.get("/failure", handleEsewaFailure);
