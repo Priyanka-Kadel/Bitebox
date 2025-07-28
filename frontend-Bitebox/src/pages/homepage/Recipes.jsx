@@ -128,7 +128,7 @@ const Recipes = () => {
             >
               <div className="relative">
                 <img 
-                  src={`https://localhost:3000/${recipe.recipeImage}`} 
+                  src={`/api/${recipe.recipeImage}`} 
                   alt={recipe.title} 
                   className="w-full h-48 object-cover rounded-lg mb-3 transition-transform duration-300 group-hover:scale-105" 
                 />
