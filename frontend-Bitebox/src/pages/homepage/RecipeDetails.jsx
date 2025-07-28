@@ -204,7 +204,7 @@ const RecipeDetails = () => {
         {/* Right: Image */}
         <div className="flex-shrink-0 flex items-start justify-center">
           <img
-            src={recipe.recipeImage ? `https://localhost:3000/${recipe.recipeImage}` : "/src/assets/images/meal.png"}
+            src={recipe.recipeImage ? `/api/${recipe.recipeImage}` : "/src/assets/images/meal.png"}
             alt={recipe.title}
             className="rounded-xl shadow w-[350px] h-[260px] object-cover border border-gray-300"
           />
