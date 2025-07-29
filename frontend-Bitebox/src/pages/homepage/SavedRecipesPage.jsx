@@ -88,7 +88,7 @@ const SavedRecipesPage = () => {
                   {/* Recipe Image */}
                   <div className="relative">
                     <img
-                      src={`https://localhost:3000/${recipe.recipeImage}`}
+                      src={`/api/${recipe.recipeImage}`}
                       alt={recipe.title}
                       className="w-full h-48 object-cover"
                     />
