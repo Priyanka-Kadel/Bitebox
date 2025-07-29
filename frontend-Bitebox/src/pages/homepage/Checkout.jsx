@@ -54,7 +54,7 @@ const Checkout = () => {
       setUser(userObj);
       
       // Load user-specific cart using user ID (same pattern as Cart.jsx)
-      const userCartKey = `cart_${userObj._id}`;
+      const userCartKey = `cart_${userObj.id}`;
       const cart = JSON.parse(localStorage.getItem(userCartKey) || "[]");
       setCartItems(cart);
       

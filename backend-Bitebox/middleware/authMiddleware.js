@@ -11,7 +11,7 @@ const verifyToken = (req, res, next) => {
             token.split(' ')[1], // Assuming the token is in the format "Bearer
             process.env.JWT_SECRET || 'SECRETHO'
         );
-        // const verified = jwt.verify(token, process.env.JWT_SECRET || 'your_secret_key');
+
         req.user = verified; // Attach user info to request object
         next();
     } catch (err) {

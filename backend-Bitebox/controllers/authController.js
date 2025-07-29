@@ -123,8 +123,7 @@ const loginUser = async (req, res) => {
         // If login is successful:
         req.session.userId = user._id;
         req.session.role = user.role;
-        req.session.userName = user.name; // optional, for convenience
-
+        req.session.userName = user.name; 
         res.status(200).json({ 
             success: true, 
             message: 'Login successful', 
