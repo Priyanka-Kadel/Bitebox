@@ -1,9 +1,7 @@
-//PROTECT THE MIDDLEWARE
 const jwt = require("jsonwebtoken");
 const asyncHandler = require("./async");
 const User = require("../models/User");
 
-//Protect routes
 exports.protect = asyncHandler(async (req, res, next) => {
   let token;
 
@@ -15,7 +13,6 @@ exports.protect = asyncHandler(async (req, res, next) => {
     token = req.headers.authorization.split(" ")[1];
   }
 
-  //Make sure token exist
   if (!token) {
     return res
       .status(401)
@@ -26,7 +23,6 @@ exports.protect = asyncHandler(async (req, res, next) => {
   }
 
   try {
-    //Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET || "SECRETHO");
     console.log("Decoded token:", decoded);
     
@@ -41,7 +37,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
         });
     }
     
-    // Check if token matches the one stored in database
+
     if (req.user.token !== token) {
       return res
         .status(401)
@@ -74,7 +70,6 @@ exports.protect = asyncHandler(async (req, res, next) => {
   }
 });
 
-// Grant access to specific roles
 exports.authorize = (...roles) => {
   return (req, res, next) => {
     console.log("Checking authorization for roles:", roles);
