@@ -31,7 +31,7 @@ const ForgotPassword = () => {
     <div
       className="flex justify-center items-center min-h-screen bg-cover bg-center"
       style={{
-        backgroundImage: `url(${forgotBg})`, // Use local image
+        backgroundImage: `url(${forgotBg})`,
         backgroundRepeat: "no-repeat",
         backgroundAttachment: "fixed",
         backgroundPosition: "center",

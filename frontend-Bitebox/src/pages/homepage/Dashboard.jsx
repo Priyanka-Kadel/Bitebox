@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import SearchBar from "../../components/Searchbar.jsx";
@@ -24,7 +23,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   const questions = [
-    // Math questions
+
     {
       type: 'math',
       question: 'What is 7 + 5?',
@@ -50,7 +49,6 @@ const Dashboard = () => {
       options: ['4', '5', '6', '8']
     },
     
-    // Logic questions
     {
       type: 'logic',
       question: 'Which color is the sky on a clear day?',
@@ -76,7 +74,6 @@ const Dashboard = () => {
       options: ['spring', 'autumn', 'winter', 'summer']
     },
     
-    // Food-related questions
     {
       type: 'food',
       question: 'What color is a ripe banana?',
@@ -102,7 +99,6 @@ const Dashboard = () => {
       options: ['spoon', 'fork', 'knife', 'plate']
     },
     
-    // Simple verification questions
     {
       type: 'verification',
       question: 'Are you a human?',
@@ -240,7 +236,6 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    // Get user info to check if admin
     const userData = sessionStorage.getItem("user");
     if (userData) {
       try {
@@ -298,7 +293,6 @@ const Dashboard = () => {
   
   const getVisiblePopularRecipes = () => {
     if (!Array.isArray(recipes)) return [];
-    // Show recent recipes
     const recentRecipes = recipes.slice(0, 4);
     return recentRecipes.length <= 4 ? recentRecipes : recentRecipes.slice(popularIndex, popularIndex + 4);
   };

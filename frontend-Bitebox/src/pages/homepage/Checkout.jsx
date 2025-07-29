@@ -20,7 +20,6 @@ const Checkout = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [user, setUser] = useState(null);
 
-  // Add the esewaCall function
   const esewaCall = (formData) => {
     console.log("Form data to eSewa:", formData); 
     const path = "https://rc-epay.esewa.com.np/api/epay/main/v2/form";
@@ -41,7 +40,6 @@ const Checkout = () => {
   };
 
   useEffect(() => {
-    // Check if user is logged in
     const storedUser = sessionStorage.getItem("user");
     if (!storedUser) {
       alert("Please log in to checkout!");
@@ -53,7 +51,6 @@ const Checkout = () => {
       const userObj = JSON.parse(storedUser);
       setUser(userObj);
       
-      // Load user-specific cart using user ID (same pattern as Cart.jsx)
       const userCartKey = `cart_${userObj.id}`;
       const cart = JSON.parse(sessionStorage.getItem(userCartKey) || "[]");
       setCartItems(cart);
@@ -79,7 +76,6 @@ const Checkout = () => {
       [name]: value
     }));
     
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -101,7 +97,6 @@ const Checkout = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    // Required field validation
     if (!formData.firstName.trim()) {
       newErrors.firstName = "First name is required";
     }
@@ -152,7 +147,6 @@ const Checkout = () => {
     setIsProcessing(true);
 
     try {
-      // Create order object
       const order = {
         id: Date.now().toString(),
         items: cartItems,
@@ -163,8 +157,6 @@ const Checkout = () => {
         createdAt: new Date().toISOString()
       };
 
-      // Only handle Cash on Delivery
-      // Simulate order processing
       await new Promise(resolve => setTimeout(resolve, 2000));
       
       const orders = JSON.parse(sessionStorage.getItem("orders") || "[]");
@@ -177,7 +169,7 @@ const Checkout = () => {
       const event = new CustomEvent('cartUpdated', { detail: 0 });
       window.dispatchEvent(event);
 
-      // Redirect to success page
+
       navigate("/success", { 
         state: { 
           orderId: order.id,
@@ -202,7 +194,6 @@ const Checkout = () => {
     setIsProcessing(true);
 
     try {
-      // Create order object
       const order = {
         id: Date.now().toString(),
         items: cartItems,
@@ -213,7 +204,6 @@ const Checkout = () => {
         createdAt: new Date().toISOString()
       };
 
-      // Simulate eSewa payment processing
       await new Promise(resolve => setTimeout(resolve, 2000));
       
       const orders = JSON.parse(sessionStorage.getItem("orders") || "[]");
@@ -226,7 +216,6 @@ const Checkout = () => {
       const event = new CustomEvent('cartUpdated', { detail: 0 });
       window.dispatchEvent(event);
 
-      // Redirect to success page
       navigate("/success", { 
         state: { 
           orderId: order.id,

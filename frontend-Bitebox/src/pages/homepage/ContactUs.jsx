@@ -1,6 +1,5 @@
-
 import React from "react";
-import mealIcon from "../../assets/images/logo1.png"; // Replace with your own icon/image
+import mealIcon from "../../assets/images/logo1.png";
 
 const ContactUs = () => {
   return (

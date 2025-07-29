@@ -1,5 +1,3 @@
-// src/pages/homepage/AboutUs.jsx
-
 import React from "react";
 import mealIcon from "../../assets/images/logo1.png"; 
 import { FaMapMarkerAlt, FaLock, FaPiggyBank } from "react-icons/fa";
