@@ -42,7 +42,7 @@ const Checkout = () => {
 
   useEffect(() => {
     // Check if user is logged in
-    const storedUser = localStorage.getItem("user");
+    const storedUser = sessionStorage.getItem("user");
     if (!storedUser) {
       alert("Please log in to checkout!");
       navigate("/login");
@@ -55,7 +55,7 @@ const Checkout = () => {
       
       // Load user-specific cart using user ID (same pattern as Cart.jsx)
       const userCartKey = `cart_${userObj.id}`;
-      const cart = JSON.parse(localStorage.getItem(userCartKey) || "[]");
+      const cart = JSON.parse(sessionStorage.getItem(userCartKey) || "[]");
       setCartItems(cart);
       
       if (cart.length === 0) {
@@ -167,9 +167,9 @@ const Checkout = () => {
       // Simulate order processing
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      const orders = JSON.parse(localStorage.getItem("orders") || "[]");
+      const orders = JSON.parse(sessionStorage.getItem("orders") || "[]");
       orders.push(order);
-      localStorage.setItem("orders", JSON.stringify(orders));
+      sessionStorage.setItem("orders", JSON.stringify(orders));
 
       const userCartKey = `cart_${user._id}`;
       localStorage.removeItem(userCartKey);
@@ -216,9 +216,9 @@ const Checkout = () => {
       // Simulate eSewa payment processing
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      const orders = JSON.parse(localStorage.getItem("orders") || "[]");
+      const orders = JSON.parse(sessionStorage.getItem("orders") || "[]");
       orders.push(order);
-      localStorage.setItem("orders", JSON.stringify(orders));
+      sessionStorage.setItem("orders", JSON.stringify(orders));
 
       const userCartKey = `cart_${user._id}`;
       localStorage.removeItem(userCartKey);

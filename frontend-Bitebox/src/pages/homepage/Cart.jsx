@@ -13,7 +13,7 @@ const Cart = () => {
   const [itemToDelete, setItemToDelete] = useState(null);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
+    const storedUser = sessionStorage.getItem("user");
     if (!storedUser) {
       alert("Please log in to view your cart!");
       navigate("/login");
@@ -25,7 +25,7 @@ const Cart = () => {
       setUser(userObj);
       
       const userCartKey = `cart_${userObj.id}`;
-      const cart = JSON.parse(localStorage.getItem(userCartKey) || "[]");
+      const cart = JSON.parse(sessionStorage.getItem(userCartKey) || "[]");
       setCartItems(cart);
     } catch (e) {
       console.error("Error parsing user data:", e);
@@ -48,7 +48,7 @@ const Cart = () => {
     setCartItems(updatedCart);
     
     const userCartKey = `cart_${user.id}`;
-    localStorage.setItem(userCartKey, JSON.stringify(updatedCart));
+    sessionStorage.setItem(userCartKey, JSON.stringify(updatedCart));
     
     // Update cart count in navbar
     const event = new CustomEvent('cartUpdated', { detail: updatedCart.length });
@@ -60,7 +60,7 @@ const Cart = () => {
     setCartItems(updatedCart);
 
     const userCartKey = `cart_${user.id}`;
-    localStorage.setItem(userCartKey, JSON.stringify(updatedCart));
+    sessionStorage.setItem(userCartKey, JSON.stringify(updatedCart));
     
     const event = new CustomEvent('cartUpdated', { detail: updatedCart.length });
     window.dispatchEvent(event);
