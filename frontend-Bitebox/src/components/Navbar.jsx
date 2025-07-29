@@ -13,15 +13,15 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    const storedRole = localStorage.getItem("role");
+    const storedUser = sessionStorage.getItem("user");
+    const storedRole = sessionStorage.getItem("role");
     if (storedUser) {
       try {
         const userObj = JSON.parse(storedUser);
         setUser(userObj);
         
         // Load user-specific cart count
-        const userCart = JSON.parse(localStorage.getItem(`cart_${userObj.id}`) || "[]");
+        const userCart = JSON.parse(sessionStorage.getItem(`cart_${userObj.id}`) || "[]");
         setCartItemCount(userCart.length);
       } catch (e) {
         console.error("Error parsing user data:", e);
@@ -72,7 +72,7 @@ const Navbar = () => {
   };
 
 
-  const isLoggedIn = !!localStorage.getItem("token"); 
+  const isLoggedIn = !!sessionStorage.getItem("token"); 
 
   return (
     <nav className="bg-white shadow-lg fixed w-full top-0 z-50">

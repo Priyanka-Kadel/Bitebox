@@ -6,18 +6,18 @@ const Wishlist = ({ flatId, onWishlistChange }) => {
   const [isWishlist, setIsWishlist] = useState(false);
 
   useEffect(() => {
-    const storedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+    const storedWishlist = JSON.parse(sessionStorage.getItem("wishlist")) || [];
     setIsWishlist(storedWishlist.includes(flatId));
   }, [flatId]);
 
   const handleWishlist = () => {
     let newWishlist;
     if (isWishlist) {
-      newWishlist = JSON.parse(localStorage.getItem("wishlist")).filter((id) => id !== flatId);
+      newWishlist = JSON.parse(sessionStorage.getItem("wishlist")).filter((id) => id !== flatId);
     } else {
-      newWishlist = [...(JSON.parse(localStorage.getItem("wishlist")) || []), flatId];
+      newWishlist = [...(JSON.parse(sessionStorage.getItem("wishlist")) || []), flatId];
     }
-    localStorage.setItem("wishlist", JSON.stringify(newWishlist));
+    sessionStorage.setItem("wishlist", JSON.stringify(newWishlist));
     setIsWishlist(!isWishlist);
     if (onWishlistChange) {
       onWishlistChange(newWishlist);

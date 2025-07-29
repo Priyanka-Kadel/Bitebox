@@ -5,20 +5,20 @@ const SavedRecipes = ({ recipeId }) => {
   const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
-    const savedRecipes = JSON.parse(localStorage.getItem("savedRecipes") || "[]");
+    const savedRecipes = JSON.parse(sessionStorage.getItem("savedRecipes") || "[]");
     setIsSaved(savedRecipes.includes(recipeId));
   }, [recipeId]);
 
   const toggleSaved = () => {
-    const savedRecipes = JSON.parse(localStorage.getItem("savedRecipes") || "[]");
+    const savedRecipes = JSON.parse(sessionStorage.getItem("savedRecipes") || "[]");
     
     if (isSaved) {
       const updatedSavedRecipes = savedRecipes.filter(id => id !== recipeId);
-      localStorage.setItem("savedRecipes", JSON.stringify(updatedSavedRecipes));
+      sessionStorage.setItem("savedRecipes", JSON.stringify(updatedSavedRecipes));
       setIsSaved(false);
     } else {
       savedRecipes.push(recipeId);
-      localStorage.setItem("savedRecipes", JSON.stringify(savedRecipes));
+      sessionStorage.setItem("savedRecipes", JSON.stringify(savedRecipes));
       setIsSaved(true);
     }
   };
