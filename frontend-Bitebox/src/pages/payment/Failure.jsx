@@ -10,7 +10,7 @@ const Failure = () => {
     const [orderId, setOrderId] = useState(null);
   
     useEffect(() => {
-      // Get orderId from URL params (for eSewa redirects)
+
       const urlParams = new URLSearchParams(location.search);
       const orderIdFromUrl = urlParams.get('orderId');
       setOrderId(orderIdFromUrl);

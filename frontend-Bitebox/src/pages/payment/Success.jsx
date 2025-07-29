@@ -10,7 +10,7 @@ const Success = () => {
   const [order, setOrder] = useState(location.state?.orderDetails);
   const [loading, setLoading] = useState(false);
 
-  // Get orderId from URL params (for eSewa redirects)
+
   const urlParams = new URLSearchParams(location.search);
   const orderIdFromUrl = urlParams.get('orderId');
 
