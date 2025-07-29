@@ -301,7 +301,7 @@ const AdminDashboard = () => {
                           <td className="px-4 py-3 border border-gray-200">
                             {recipe.recipeImage && (
                               <img
-                                src={`https://localhost:3000/${recipe.recipeImage}`}
+                                src={`/api/${recipe.recipeImage}`}
                                 alt="Recipe"
                                 className="w-16 h-16 object-cover rounded-lg"
                               />
