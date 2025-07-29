@@ -83,8 +83,8 @@ const EmailVerification = () => {
   };
 
   const handleInputChange = (e) => {
-    const value = e.target.value.replace(/\D/g, ''); // Only allow digits
-    if (value.length <= 6) { // Limit to 6 digits
+    const value = e.target.value.replace(/\D/g, '');
+    if (value.length <= 6) {
       setVerificationToken(value);
     }
   };
