@@ -1,4 +1,3 @@
-// EditUser.jsx
 import React, { useEffect, useState } from "react";
 import { FaHome, FaPlus, FaSave, FaUser } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
@@ -129,7 +128,6 @@ const EditUser = () => {
         </div>
       </div>
 
-      {/* Right Content with Background Image */}
 <div className="flex-1 flex justify-center items-center p-6 overflow-auto bg-gray-100 relative">
   {/* Edit User Frame */}
   <div className="w-96 h-96 border-4 border-gray-300 rounded-lg p-6 shadow-lg flex flex-col justify-center items-center z-10 bg-cyan-800">

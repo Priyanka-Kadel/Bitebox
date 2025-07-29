@@ -15,25 +15,21 @@ const UserProfile = () => {
       try {
         setLoading(true);
         
-        // Get user data from localStorage
         const storedUser = sessionStorage.getItem('user');
         
         if (storedUser) {
           try {
             const userData = JSON.parse(storedUser);
             
-            // Check if we have valid user data with email
             if (userData.email && userData.name) {
               setUser(userData);
               setLoading(false);
               return;
             }
           } catch (e) {
-            // Continue to API fetch if localStorage parsing fails
           }
         }
 
-        // If no valid stored user data, try to fetch from API using token from user object
         const storedUserObj = storedUser ? JSON.parse(storedUser) : null;
         const token = storedUserObj?.token || sessionStorage.getItem('token');
         
@@ -59,12 +55,11 @@ const UserProfile = () => {
               if (response.ok) {
                 const data = await response.json();
 
-                // Handle different possible response structures
                 if (data.user) {
                   userData = data.user;
                   break;
                 } else if (data.users && data.users.length > 0) {
-                  // For the customer endpoint, find the current user by email
+
                   const currentUserEmail = storedUserObj?.email;
                   const currentUser = data.users.find(u => u.email === currentUserEmail);
                   userData = currentUser || data.users[0];
@@ -78,12 +73,10 @@ const UserProfile = () => {
                 }
               }
             } catch (endpointError) {
-              // Continue to next endpoint if current one fails
             }
           }
 
           if (userData) {
-            // Merge with stored data to preserve token and ensure we have all fields
             const mergedUserData = { 
               ...userData, 
               token: token,
@@ -93,7 +86,6 @@ const UserProfile = () => {
               id: userData.id || userData._id || storedUserObj?.id
             };
             setUser(mergedUserData);
-            // Update localStorage with fresh data
             sessionStorage.setItem('user', JSON.stringify(mergedUserData));
           } else {
             setError('Unable to fetch user data. Please log in again.');

@@ -35,7 +35,7 @@ const Profile = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-  // Inject fade-in styles and trigger animation
+
   useEffect(() => {
     const styleSheet = document.createElement("style");
     styleSheet.innerText = styles;
@@ -80,7 +80,6 @@ const Profile = () => {
     navigate(-1);
   };
 
-  // Color palette and glassmorphism
   const gradientBg = "bg-gradient-to-br from-[#E6F4EA] via-white to-[#c7e7d2]";
   const glassCard = "backdrop-blur-lg bg-white/70 border border-[#034694]/20 shadow-2xl";
   const borderGreen = "border-[#034694]/30";
