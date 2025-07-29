@@ -98,6 +98,13 @@ const loginUser = async (req, res) => {
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
             if (req.loginLimiter) req.loginLimiter.increment();
+            // Update failed login stats
+            user.loginStats = user.loginStats || {};
+            user.loginStats.totalFailedLogins = (user.loginStats.totalFailedLogins || 0) + 1;
+            user.loginStats.consecutiveFailedLogins = (user.loginStats.consecutiveFailedLogins || 0) + 1;
+            user.loginStats.lastFailedLoginAt = new Date();
+            user.loginStats.lastFailedLoginIP = req.ip;
+            await user.save();
             return res.status(401).json({ success: false, message: 'Invalid email or password' });
         }
 
@@ -117,6 +124,23 @@ const loginUser = async (req, res) => {
 
         user.token = token;
         await user.save();
+
+        // Update login stats
+        user.loginStats = user.loginStats || {};
+        user.sessionStats = user.sessionStats || {};
+        user.activityStats = user.activityStats || {};
+
+        user.loginStats.totalLogins = (user.loginStats.totalLogins || 0) + 1;
+        user.loginStats.totalSuccessfulLogins = (user.loginStats.totalSuccessfulLogins || 0) + 1;
+        user.loginStats.lastLoginAt = new Date();
+        user.loginStats.lastLoginIP = req.ip;
+        user.loginStats.consecutiveFailedLogins = 0;
+
+        user.sessionStats.totalSessions = (user.sessionStats.totalSessions || 0) + 1;
+        user.sessionStats.activeSessions = (user.sessionStats.activeSessions || 0) + 1;
+        user.sessionStats.lastSessionAt = new Date();
+
+        user.activityStats.lastActivityAt = new Date();
 
         if (req.loginLimiter) req.loginLimiter.reset();
 
