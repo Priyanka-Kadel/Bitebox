@@ -12,12 +12,10 @@ const AdminRoute = () => {
   const navigate = useNavigate();
   const user = getUser();
 
-  // 1. If not logged in, redirect with state
   if (!user) {
     return <Navigate to="/login" state={{ from: location, adminOnly: true }} replace />;
   }
 
-  // 2. If user is admin, allow access
   if (user.role === "admin") {
     return <Outlet />;
   }
