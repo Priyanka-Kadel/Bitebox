@@ -10,7 +10,7 @@ const SavedRecipesPage = () => {
   useEffect(() => {
     const fetchSavedRecipes = async () => {
       try {
-        const savedRecipeIds = JSON.parse(localStorage.getItem("savedRecipes") || "[]");
+        const savedRecipeIds = JSON.parse(sessionStorage.getItem("savedRecipes") || "[]");
         
         if (savedRecipeIds.length === 0) {
           setSavedRecipes([]);
@@ -20,7 +20,7 @@ const SavedRecipesPage = () => {
 
         let allRecipesResponse;
         try {
-          const token = JSON.parse(localStorage.getItem("user") ?? '{}').token;
+          const token = JSON.parse(sessionStorage.getItem("user") ?? '{}').token;
           allRecipesResponse = await axios.get(
             "https://localhost:3000/api/recipes",
             {
@@ -49,9 +49,9 @@ const SavedRecipesPage = () => {
   }, []);
 
   const removeFromSaved = (recipeId) => {
-    const currentSaved = JSON.parse(localStorage.getItem("savedRecipes") || "[]");
+    const currentSaved = JSON.parse(sessionStorage.getItem("savedRecipes") || "[]");
     const updatedSaved = currentSaved.filter(id => id !== recipeId);
-    localStorage.setItem("savedRecipes", JSON.stringify(updatedSaved));
+    sessionStorage.setItem("savedRecipes", JSON.stringify(updatedSaved));
     setSavedRecipes(prev => prev.filter(recipe => recipe._id !== recipeId));
   };
 

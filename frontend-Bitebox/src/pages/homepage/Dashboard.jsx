@@ -241,7 +241,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     // Get user info to check if admin
-    const userData = localStorage.getItem("user");
+    const userData = sessionStorage.getItem("user");
     if (userData) {
       try {
         setUser(JSON.parse(userData));
@@ -252,7 +252,7 @@ const Dashboard = () => {
 
     fetch("https://localhost:3000/api/recipes", {
       headers: {
-        Authorization: `Bearer ${JSON.parse(localStorage.getItem("user") ?? '{}').token}`
+        Authorization: `Bearer ${JSON.parse(sessionStorage.getItem("user") ?? '{}').token}`
       },
     })
       .then((response) => response.json())

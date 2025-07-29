@@ -39,11 +39,11 @@ const Login = () => {
 
       const { token, name, role, _id } = response.data;
 
-      localStorage.setItem("user", JSON.stringify({ token, name, role, email:response?.data?.email ?? email, _id}));
-      localStorage.setItem("userId", _id); 
+      sessionStorage.setItem("user", JSON.stringify({ token, name, role, email:response?.data?.email ?? email, _id}));
+      sessionStorage.setItem("userId", _id); 
 
-      console.log("Stored user:", localStorage.getItem("user"));
-      console.log("Stored userId:", localStorage.getItem("userId"));
+      console.log("Stored user:", sessionStorage.getItem("user"));
+      console.log("Stored userId:", sessionStorage.getItem("userId"));
 
       toast.success(`Welcome back, ${name}!`);
 
