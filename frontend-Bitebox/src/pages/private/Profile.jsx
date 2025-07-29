@@ -188,7 +188,7 @@ const Profile = () => {
             <div className="flex justify-end gap-4 mt-2">
               <button
                 onClick={() => {
-                  localStorage.clear();
+                  sessionStorage.clear();
                   setShowLogoutModal(false);
                   toast.success("Logged out successfully!", {
                     position: "top-right",

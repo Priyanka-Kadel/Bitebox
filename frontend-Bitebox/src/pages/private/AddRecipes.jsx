@@ -27,8 +27,8 @@ const AddRecipes = () => {
     const token1 = sessionStorage.getItem('token');
     const userData = sessionStorage.getItem('user');
     
-    console.log('Direct token from localStorage:', token1);
-    console.log('User data from localStorage:', userData);
+    console.log('Direct token from sessionStorage:', token1);
+    console.log('User data from sessionStorage:', userData);
     
     if (userData) {
       try {

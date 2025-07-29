@@ -57,8 +57,8 @@ const Navbar = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("role");
+    sessionStorage.removeItem("user");
+    sessionStorage.removeItem("role");
     setUser(null);
     setCartItemCount(0); 
     setIsDropdownOpen(false);

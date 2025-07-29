@@ -14,7 +14,7 @@ const EditProfile = () => {
                 const token = JSON.parse(sessionStorage.getItem("user"))?.token;
 
                 if (!token) {
-                    console.error("No token found in localStorage");
+                    console.error("No token found in sessionStorage");
                     navigate("/login");
                     return;
                 }
@@ -54,7 +54,7 @@ const EditProfile = () => {
             const token = JSON.parse(sessionStorage.getItem("user"))?.token;
 
             if (!token) {
-                console.error("No token found in localStorage");
+                console.error("No token found in sessionStorage");
                 navigate("/login");
                 return;
             }

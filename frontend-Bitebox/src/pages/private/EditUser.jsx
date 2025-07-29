@@ -116,9 +116,9 @@ const EditUser = () => {
           </button>
           <button
             onClick={() => {
-              localStorage.removeItem("token");
-              localStorage.removeItem("isAdmin");
-              localStorage.removeItem("user");
+              sessionStorage.removeItem("token");
+              sessionStorage.removeItem("isAdmin");
+              sessionStorage.removeItem("user");
               navigate("/login");
             }}
             className="w-full px-4 py-2 rounded-md bg-red-600 hover:bg-red-700 text-white font-bold"

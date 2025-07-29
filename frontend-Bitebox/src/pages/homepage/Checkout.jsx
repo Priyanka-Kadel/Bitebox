@@ -164,7 +164,7 @@ const Checkout = () => {
       sessionStorage.setItem("orders", JSON.stringify(orders));
 
       const userCartKey = `cart_${user._id}`;
-      localStorage.removeItem(userCartKey);
+      sessionStorage.removeItem(userCartKey);
 
       const event = new CustomEvent('cartUpdated', { detail: 0 });
       window.dispatchEvent(event);
@@ -211,7 +211,7 @@ const Checkout = () => {
       sessionStorage.setItem("orders", JSON.stringify(orders));
 
       const userCartKey = `cart_${user._id}`;
-      localStorage.removeItem(userCartKey);
+      sessionStorage.removeItem(userCartKey);
 
       const event = new CustomEvent('cartUpdated', { detail: 0 });
       window.dispatchEvent(event);
