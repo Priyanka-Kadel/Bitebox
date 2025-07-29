@@ -1,4 +1,3 @@
-// components/Wishlist.jsx
 import React, { useEffect, useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 

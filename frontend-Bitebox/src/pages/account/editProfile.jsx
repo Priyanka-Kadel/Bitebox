@@ -1,4 +1,3 @@
-// EditProfile.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
@@ -16,7 +15,7 @@ const EditProfile = () => {
 
                 if (!token) {
                     console.error("No token found in localStorage");
-                    navigate("/login"); // Redirect to login if no token exists
+                    navigate("/login");
                     return;
                 }
 
@@ -30,7 +29,7 @@ const EditProfile = () => {
                 );
 
                 if (response.data && response.data.user) {
-                    setUser(response.data.user); // Assuming the response contains user data
+                    setUser(response.data.user);
                 } else {
                     console.error("User data not found in response");
                     toast.error("User data not found");

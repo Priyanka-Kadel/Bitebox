@@ -1,4 +1,3 @@
-// Navbar.jsx
 import { useEffect, useState } from "react";
 import { FaCaretDown, FaHeart, FaSignOutAlt, FaUser, FaHome, FaUtensils, FaShoppingCart, FaInfoCircle, FaEnvelope, FaCrown } from "react-icons/fa";
 import { Link, NavLink, useNavigate } from "react-router-dom";
@@ -20,7 +19,6 @@ const Navbar = () => {
         const userObj = JSON.parse(storedUser);
         setUser(userObj);
         
-        // Load user-specific cart count
         const userCart = JSON.parse(sessionStorage.getItem(`cart_${userObj.id}`) || "[]");
         setCartItemCount(userCart.length);
       } catch (e) {
@@ -29,7 +27,6 @@ const Navbar = () => {
     }
   }, []);
 
-  // Listen for cart updates
   useEffect(() => {
     const handleCartUpdate = (event) => {
       setCartItemCount(event.detail);
@@ -43,7 +40,6 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    // Listen for admin access denied event
     const handleAdminAccessDenied = () => {
       toast.error("You need to login as admin first!", {
         position: "top-right",
@@ -64,7 +60,7 @@ const Navbar = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("role");
     setUser(null);
-    setCartItemCount(0); // Reset cart count on logout
+    setCartItemCount(0); 
     setIsDropdownOpen(false);
     setShowLogoutConfirm(false);
     navigate("/");
