@@ -54,7 +54,7 @@ const Checkout = () => {
       setUser(userObj);
       
       // Load user-specific cart using user ID (same pattern as Cart.jsx)
-      const userCartKey = `cart_${userObj.id}`;
+      const userCartKey = `cart_${userObj._id}`;
       const cart = JSON.parse(localStorage.getItem(userCartKey) || "[]");
       setCartItems(cart);
       
@@ -171,7 +171,7 @@ const Checkout = () => {
       orders.push(order);
       localStorage.setItem("orders", JSON.stringify(orders));
 
-      const userCartKey = `cart_${user.id}`;
+      const userCartKey = `cart_${user._id}`;
       localStorage.removeItem(userCartKey);
 
       const event = new CustomEvent('cartUpdated', { detail: 0 });
@@ -220,7 +220,7 @@ const Checkout = () => {
       orders.push(order);
       localStorage.setItem("orders", JSON.stringify(orders));
 
-      const userCartKey = `cart_${user.id}`;
+      const userCartKey = `cart_${user._id}`;
       localStorage.removeItem(userCartKey);
 
       const event = new CustomEvent('cartUpdated', { detail: 0 });
@@ -456,7 +456,7 @@ const Checkout = () => {
                   {cartItems.map((item) => (
                     <div key={item.recipeId} className="flex items-center space-x-3">
                       <img
-                        src={`https://localhost:3000/${item.image}`}
+                        src={`/api/${item.image}`}
                         alt={item.title}
                         className="w-12 h-12 object-cover rounded-lg"
                       />
