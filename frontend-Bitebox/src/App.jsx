@@ -29,6 +29,9 @@ import SavedRecipesPage from "./pages/homepage/SavedRecipesPage";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import axios from "axios";
+axios.defaults.withCredentials = true;
+
 function App() {
   return (
     <Router>
