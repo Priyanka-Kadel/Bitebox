@@ -28,7 +28,7 @@ const EditRecipe = () => {
       try {
         const response = await fetch(`https://localhost:3000/api/recipes/${id}`, {
           headers: {
-            Authorization: `Bearer ${JSON.parse(localStorage.getItem("user") ?? '{}').token}`
+            Authorization: `Bearer ${JSON.parse(sessionStorage.getItem("user") ?? '{}').token}`
           }
         });
         
@@ -168,7 +168,7 @@ const EditRecipe = () => {
       const response = await fetch(`https://localhost:3000/api/recipes/${id}`, {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${JSON.parse(localStorage.getItem("user") ?? '{}').token}`
+          Authorization: `Bearer ${JSON.parse(sessionStorage.getItem("user") ?? '{}').token}`
         },
         body: formDataToSend
       });

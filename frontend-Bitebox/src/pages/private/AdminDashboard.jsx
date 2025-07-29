@@ -15,8 +15,8 @@ const AdminDashboard = () => {
 
   // Helper function to get auth token
   const getAuthToken = () => {
-    const token = localStorage.getItem('token');
-    const userData = localStorage.getItem('user');
+    const token = sessionStorage.getItem('token');
+    const userData = sessionStorage.getItem('user');
     
     if (token) {
       return token;

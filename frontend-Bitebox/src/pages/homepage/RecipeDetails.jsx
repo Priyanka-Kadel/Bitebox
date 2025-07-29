@@ -21,7 +21,7 @@ const RecipeDetails = () => {
       window.history.replaceState(null, '', `${window.location.pathname}?refresh=${timestamp}`);
     }
 
-    const storedUser = localStorage.getItem("user");
+    const storedUser = sessionStorage.getItem("user");
     if (storedUser) {
       try {
         const userObj = JSON.parse(storedUser);
@@ -35,7 +35,7 @@ const RecipeDetails = () => {
       try {
         let recipeResponse;
         try {
-          const token = JSON.parse(localStorage.getItem("user") ?? '{}').token;
+          const token = JSON.parse(sessionStorage.getItem("user") ?? '{}').token;
           recipeResponse = await axios.get(
             `https://localhost:3000/api/recipes/${id}`,
             {
@@ -66,7 +66,7 @@ const RecipeDetails = () => {
       return;
     }
     const userCartKey = `cart_${user.id}`;
-    const cart = JSON.parse(localStorage.getItem(userCartKey) || "[]");
+    const cart = JSON.parse(sessionStorage.getItem(userCartKey) || "[]");
     const cartItem = {
       recipeId: recipe._id,
       title: recipe.title,
@@ -85,7 +85,7 @@ const RecipeDetails = () => {
     } else {
       cart.push(cartItem);
     }
-    localStorage.setItem(userCartKey, JSON.stringify(cart));
+    sessionStorage.setItem(userCartKey, JSON.stringify(cart));
     const event = new CustomEvent('cartUpdated', { detail: cart.length });
     window.dispatchEvent(event);
     toast.success("Recipe added to cart!");

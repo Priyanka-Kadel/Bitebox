@@ -25,8 +25,8 @@ const AddRecipes = () => {
     console.log('=== TOKEN DEBUG ===');
     
     // Check all possible token locations
-    const token1 = localStorage.getItem('token');
-    const userData = localStorage.getItem('user');
+    const token1 = sessionStorage.getItem('token');
+    const userData = sessionStorage.getItem('user');
     
     console.log('Direct token from localStorage:', token1);
     console.log('User data from localStorage:', userData);
@@ -62,8 +62,8 @@ const AddRecipes = () => {
     console.log('=== GETTING AUTH TOKEN ===');
     
     // Try multiple sources for the token
-    const directToken = localStorage.getItem('token');
-    const userData = localStorage.getItem('user');
+    const directToken = sessionStorage.getItem('token');
+    const userData = sessionStorage.getItem('user');
     
     console.log('Direct token:', directToken ? 'Exists' : 'Not found');
     console.log('User data:', userData ? 'Exists' : 'Not found');
@@ -121,7 +121,7 @@ const AddRecipes = () => {
     debugToken();
     testToken();
     // Check if user is logged in and is admin
-    const userData = localStorage.getItem("user");
+    const userData = sessionStorage.getItem("user");
     if (userData) {
       try {
         const userObj = JSON.parse(userData);

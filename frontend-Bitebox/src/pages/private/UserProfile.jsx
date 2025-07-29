@@ -16,7 +16,7 @@ const UserProfile = () => {
         setLoading(true);
         
         // Get user data from localStorage
-        const storedUser = localStorage.getItem('user');
+        const storedUser = sessionStorage.getItem('user');
         
         if (storedUser) {
           try {
@@ -35,7 +35,7 @@ const UserProfile = () => {
 
         // If no valid stored user data, try to fetch from API using token from user object
         const storedUserObj = storedUser ? JSON.parse(storedUser) : null;
-        const token = storedUserObj?.token || localStorage.getItem('token');
+        const token = storedUserObj?.token || sessionStorage.getItem('token');
         
         if (token) {
           const endpoints = [
@@ -94,7 +94,7 @@ const UserProfile = () => {
             };
             setUser(mergedUserData);
             // Update localStorage with fresh data
-            localStorage.setItem('user', JSON.stringify(mergedUserData));
+            sessionStorage.setItem('user', JSON.stringify(mergedUserData));
           } else {
             setError('Unable to fetch user data. Please log in again.');
           }

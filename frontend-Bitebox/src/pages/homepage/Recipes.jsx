@@ -13,7 +13,7 @@ const Recipes = () => {
     // Fetch recipes - try with auth first, then without
     const fetchRecipes = async () => {
       try {
-        const token = JSON.parse(localStorage.getItem("user") ?? '{}').token;
+        const token = JSON.parse(sessionStorage.getItem("user") ?? '{}').token;
         const response = await fetch("https://localhost:3000/api/recipes", {
           headers: token ? {
             Authorization: `Bearer ${token}`

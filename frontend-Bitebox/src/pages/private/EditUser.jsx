@@ -11,7 +11,7 @@ const EditUser = () => {
   useEffect(() => {
     fetch(`https://localhost:3000/api/user/${id}`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
       },
     })
       .then((response) => response.json())
@@ -43,7 +43,7 @@ const EditUser = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           },
           body: JSON.stringify(user),
         }
