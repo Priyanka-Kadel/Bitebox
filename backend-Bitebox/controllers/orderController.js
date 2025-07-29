@@ -1,7 +1,6 @@
 const Order = require('../models/orderModel');
 const Cart = require('../models/cartModel');
 
-// POST /api/orders/create - Create order and return orderId
 exports.createOrder = async (req, res) => {
   try {
     console.log('=== ORDER CREATION START ===');
@@ -19,7 +18,7 @@ exports.createOrder = async (req, res) => {
 
     const { items, customerInfo, total, paymentMethod } = req.body;
 
-    // Validate required fields
+ 
     if (!items || !customerInfo || !total || !paymentMethod) {
       console.log('Missing required fields:', { 
         items: !!items, 
@@ -33,7 +32,6 @@ exports.createOrder = async (req, res) => {
       });
     }
 
-    // Validate items array
     if (!Array.isArray(items) || items.length === 0) {
       console.log('Invalid items array:', items);
       return res.status(400).json({
@@ -42,7 +40,6 @@ exports.createOrder = async (req, res) => {
       });
     }
 
-    // Validate customer info
     const requiredCustomerFields = ['firstName', 'lastName', 'email', 'phone', 'address', 'city'];
     for (const field of requiredCustomerFields) {
       if (!customerInfo[field]) {
@@ -56,7 +53,6 @@ exports.createOrder = async (req, res) => {
 
     console.log('Creating order for user:', req.user.id);
 
-    // Generate unique orderId and orderNumber
     const timestamp = Date.now();
     const randomStr = Math.random().toString(36).substr(2, 9).toUpperCase();
     const orderId = `ORD-${timestamp}-${randomStr}`;
@@ -65,7 +61,6 @@ exports.createOrder = async (req, res) => {
     console.log('Generated orderId:', orderId);
     console.log('Generated orderNumber:', orderNumber);
 
-    // Create new order
     const orderData = {
       userId: req.user.id,
       orderId: orderId,
@@ -98,7 +93,7 @@ exports.createOrder = async (req, res) => {
     console.error('Error message:', error.message);
     console.error('Error stack:', error.stack);
     
-    // Handle specific error types
+
     if (error.name === 'ValidationError') {
       const validationErrors = Object.values(error.errors).map(err => ({
         field: err.path,
@@ -113,7 +108,6 @@ exports.createOrder = async (req, res) => {
       });
     }
     
-    // Handle duplicate key error specifically
     if (error.code === 11000) {
       console.error('Duplicate key error:', error.keyValue);
       return res.status(400).json({
@@ -131,7 +125,6 @@ exports.createOrder = async (req, res) => {
   }
 };
 
-// GET /api/orders/:orderId/status - Get order details (public endpoint)
 exports.getOrderStatus = async (req, res) => {
   try {
     const { orderId } = req.params;
@@ -171,7 +164,6 @@ exports.getOrderStatus = async (req, res) => {
   }
 };
 
-// GET /api/orders/my-orders - Get user's orders
 exports.getUserOrders = async (req, res) => {
   try {
     const orders = await Order.find({ userId: req.user.id })
@@ -192,7 +184,6 @@ exports.getUserOrders = async (req, res) => {
   }
 };
 
-// GET /api/orders/:id - Get specific order by ID
 exports.getOrderById = async (req, res) => {
   try {
     const order = await Order.findOne({ 
@@ -222,7 +213,7 @@ exports.getOrderById = async (req, res) => {
   }
 };
 
-// PUT /api/orders/:id/cancel - Cancel order
+
 exports.cancelOrder = async (req, res) => {
   try {
     const order = await Order.findOne({ 
@@ -262,7 +253,7 @@ exports.cancelOrder = async (req, res) => {
   }
 };
 
-// Admin: GET /api/orders - Get all orders
+
 exports.getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find()
@@ -284,7 +275,6 @@ exports.getAllOrders = async (req, res) => {
   }
 };
 
-// Admin: PUT /api/orders/:id/status - Update order status
 exports.updateOrderStatus = async (req, res) => {
   try {
     const { status } = req.body;
@@ -307,7 +297,6 @@ exports.updateOrderStatus = async (req, res) => {
 
     order.status = status;
     
-    // Update timestamps based on status
     if (status === 'paid' && !order.paidAt) {
       order.paidAt = new Date();
     } else if (status === 'delivered' && !order.deliveredAt) {
