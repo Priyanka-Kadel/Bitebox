@@ -13,7 +13,6 @@ const AdminDashboard = () => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [recipeToDelete, setRecipeToDelete] = useState(null);
 
-  // Helper function to get auth token
   const getAuthToken = () => {
     const token = sessionStorage.getItem('token');
     const userData = sessionStorage.getItem('user');
@@ -32,7 +31,6 @@ const AdminDashboard = () => {
     return null;
   };
 
-  // Fetch users
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -51,7 +49,6 @@ const AdminDashboard = () => {
         if (response.ok) {
           const data = await response.json();
           console.log('Users data:', data);
-          // Handle different response structures
           if (data.users) {
             setUsers(data.users);
           } else if (Array.isArray(data)) {
@@ -72,7 +69,6 @@ const AdminDashboard = () => {
     fetchUsers();
   }, []);
 
-  // Fetch recipes
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
@@ -91,7 +87,6 @@ const AdminDashboard = () => {
         if (response.ok) {
           const data = await response.json();
           console.log('Recipes data:', data);
-          // Handle different response structures
           if (data.recipes) {
             setRecipes(data.recipes);
           } else if (Array.isArray(data)) {
@@ -139,7 +134,6 @@ const AdminDashboard = () => {
   };
 
   const handleDeleteRecipe = async (recipeId) => {
-    // Find the recipe to get its title for the confirmation message
     const recipe = recipes.find(r => r._id === recipeId);
     setRecipeToDelete(recipe);
     setShowDeleteConfirm(true);

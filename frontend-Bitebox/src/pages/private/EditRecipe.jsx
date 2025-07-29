@@ -23,7 +23,6 @@ const EditRecipe = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch recipe data
     const fetchRecipe = async () => {
       try {
         const response = await fetch(`https://localhost:3000/api/recipes/${id}`, {
@@ -34,7 +33,6 @@ const EditRecipe = () => {
         
         if (response.ok) {
           const recipe = await response.json();
-          // Transform steps data to handle different formats
           const transformSteps = (stepsData) => {
             if (!stepsData || !Array.isArray(stepsData)) return [""];
             
@@ -149,7 +147,6 @@ const EditRecipe = () => {
     try {
       const formDataToSend = new FormData();
       
-      // Add basic recipe data
       formDataToSend.append("title", formData.title);
       formDataToSend.append("description", formData.description);
       formDataToSend.append("category", formData.category);
@@ -160,7 +157,7 @@ const EditRecipe = () => {
       formDataToSend.append("ingredients", JSON.stringify(formData.ingredients));
       formDataToSend.append("directions", JSON.stringify(formData.steps));
 
-      // Add image if selected
+
       if (recipeImage) {
         formDataToSend.append("recipeImage", recipeImage);
       }

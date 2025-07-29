@@ -24,7 +24,6 @@ const AddRecipes = () => {
   const debugToken = () => {
     console.log('=== TOKEN DEBUG ===');
     
-    // Check all possible token locations
     const token1 = sessionStorage.getItem('token');
     const userData = sessionStorage.getItem('user');
     
@@ -42,7 +41,7 @@ const AddRecipes = () => {
       }
     }
     
-    // Check if token is expired
+
     if (token1) {
       try {
         const payload = JSON.parse(atob(token1.split('.')[1]));
@@ -61,7 +60,6 @@ const AddRecipes = () => {
   const getAuthToken = () => {
     console.log('=== GETTING AUTH TOKEN ===');
     
-    // Try multiple sources for the token
     const directToken = sessionStorage.getItem('token');
     const userData = sessionStorage.getItem('user');
     
@@ -120,14 +118,13 @@ const AddRecipes = () => {
   useEffect(() => {
     debugToken();
     testToken();
-    // Check if user is logged in and is admin
+
     const userData = sessionStorage.getItem("user");
     if (userData) {
       try {
         const userObj = JSON.parse(userData);
         setUser(userObj);
         
-        // Check if user is admin
         if (userObj.role !== 'admin') {
           toast.error("Access denied. Only admins can add recipes.");
           navigate("/");
@@ -214,7 +211,6 @@ const AddRecipes = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Check if user is admin
     if (!user || user.role !== 'admin') {
       toast.error("Access denied. Only admins can add recipes.");
       return;
@@ -231,7 +227,6 @@ const AddRecipes = () => {
         return;
       }
 
-      // Validate required fields
       if (!formData.title || !formData.description || !formData.prepTime || 
           !formData.cookTime || !formData.servings || !formData.totalPrice) {
         toast.error("Please fill in all required fields");
@@ -239,7 +234,6 @@ const AddRecipes = () => {
         return;
       }
 
-      // Validate ingredients
       const validIngredients = formData.ingredients.filter(ing => 
         ing.name.trim() && ing.quantity.trim() && ing.unit.trim()
       );
@@ -250,7 +244,6 @@ const AddRecipes = () => {
         return;
       }
 
-      // Validate steps
       const validSteps = formData.steps.filter(step => step.trim());
       
       if (validSteps.length === 0) {
@@ -259,10 +252,8 @@ const AddRecipes = () => {
         return;
       }
 
-      // Create FormData for multipart/form-data submission
       const formDataToSend = new FormData();
       
-      // Add basic recipe data
       formDataToSend.append("title", formData.title);
       formDataToSend.append("description", formData.description);
       formDataToSend.append("category", formData.category);
@@ -271,14 +262,12 @@ const AddRecipes = () => {
       formDataToSend.append("servings", formData.servings);
       formDataToSend.append("totalPrice", formData.totalPrice);
       
-      // Add ingredients and steps as JSON strings
       formDataToSend.append("ingredients", JSON.stringify(validIngredients));
       formDataToSend.append("steps", JSON.stringify(validSteps.map((step, index) => ({
         stepNumber: index + 1,
         instruction: step.trim()
       }))));
 
-      // Add image if selected
       if (recipeImage) {
         formDataToSend.append("recipeImage", recipeImage);
       }
@@ -320,7 +309,6 @@ const AddRecipes = () => {
     }
   };
 
-  // Don't render the form if user is not admin
   if (!user || user.role !== 'admin') {
     return (
       <div className="flex justify-center items-center min-h-screen">
