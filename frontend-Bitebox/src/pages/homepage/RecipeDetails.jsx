@@ -121,7 +121,7 @@ const RecipeDetails = () => {
 
   return (
     <div className="min-h-screen bg-[#fafbfa]">
-      {/* Recipe Card Button - above the card, left-aligned */}
+      {/* Recipe Card Button */}
       <div className="max-w-5xl mx-auto mt-8 pt-8 mb-8">
         <button className="bg-[#034694] text-white font-bold text-xl px-6 py-2 rounded-lg shadow hover:bg-[#012147] transition">
           Recipe Card

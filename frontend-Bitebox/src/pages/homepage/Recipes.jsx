@@ -10,7 +10,7 @@ const Recipes = () => {
   const [sortBy, setSortBy] = useState("");
 
   useEffect(() => {
-    // Fetch recipes - try with auth first, then without
+
     const fetchRecipes = async () => {
       try {
         const token = JSON.parse(sessionStorage.getItem("user") ?? '{}').token;
@@ -29,10 +29,10 @@ const Recipes = () => {
     fetchRecipes();
   }, []);
 
-  // Get unique categories for dropdown
+
   const categories = ['breakfast', 'lunch', 'dinner'];
 
-  // Filtering logic
+
   const filteredRecipes = recipes.filter(recipe => {
     const matchesSearch =
       recipe.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -45,12 +45,12 @@ const Recipes = () => {
     return matchesSearch && matchesCategory && matchesPrepTime;
   });
 
-  // Sorting logic
+
   const sortedRecipes = [...filteredRecipes].sort((a, b) => {
     if (sortBy === "price") return a.totalPrice - b.totalPrice;
     else if (sortBy === "time") return a.prepTime - b.prepTime;
     else if (sortBy === "name") return a.title.localeCompare(b.title);
-    else return 0; // Default: no sorting
+    else return 0; 
   });
 
   return (
