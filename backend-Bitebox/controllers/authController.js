@@ -120,6 +120,11 @@ const loginUser = async (req, res) => {
 
         if (req.loginLimiter) req.loginLimiter.reset();
 
+        // If login is successful:
+        req.session.userId = user._id;
+        req.session.role = user.role;
+        req.session.userName = user.name; // optional, for convenience
+
         res.status(200).json({ 
             success: true, 
             message: 'Login successful', 
