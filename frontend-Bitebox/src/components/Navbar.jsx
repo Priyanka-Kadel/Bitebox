@@ -96,7 +96,7 @@ const Navbar = () => {
                 `text-lg font-medium ${isActive ? "text-[#034694]" : "text-gray-700"} hover:text-[#034694]`
               }
             >
-              Recipes
+              Explore
             </NavLink>
             <NavLink
               to="/AboutUs"
@@ -104,7 +104,7 @@ const Navbar = () => {
                 `text-lg font-medium ${isActive ? "text-[#034694]" : "text-gray-700"} hover:text-[#034694]`
               }
             >
-              About
+              About Us
             </NavLink>
             <NavLink
               to="/ContactUs"
@@ -112,7 +112,7 @@ const Navbar = () => {
                 `text-lg font-medium ${isActive ? "text-[#034694]" : "text-gray-700"} hover:text-[#034694]`
               }
             >
-              Help
+              FAQs
             </NavLink>
           </div>
   

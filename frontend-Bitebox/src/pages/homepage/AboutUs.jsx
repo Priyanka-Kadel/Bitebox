@@ -8,21 +8,31 @@ const AboutUs = () => {
       {/* Hero Card */}
       <section className="w-full mt-24 mb-4 px-4 flex justify-center items-center bg-white relative overflow-hidden">
         <div className="flex flex-col md:flex-row justify-center items-center gap-10 mx-auto">
-          {/* Hero Card */}
-          <div className="bg-[#034694] rounded-2xl shadow-xl px-16 py-10 flex flex-col justify-center items-start min-w-[450px] max-w-3xl ml-[3cm]">
-            <h1 className="text-4xl md:text-4xl font-extrabold text-white mb-4 drop-shadow-xl tracking-tight leading-tight">
-              Welcome to The Bitebox!<br />
-              Your smart kitchen companion.
-            </h1>
-            <p className="text-lg md:text-xl text-white mb-6 font-medium leading-snug">
-              Skip the grocery trip and get recipes delivered right to your doorstep, so you can cook when it fits your schedule. Plus, pause or cancel any time!
-            </p>
-            <a
-              href="/recipes"
-              className="bg-[#001450] hover:bg-[#012147] text-white font-bold py-3 px-10 rounded-full shadow-md transition-transform hover:scale-105 text-lg"
-            >
-              View Recipes
-            </a>
+          {/* Enhanced Hero Card */}
+          <div className="relative bg-gradient-to-br from-[#034694] via-[#023a7a] to-[#001450] rounded-[2rem] shadow-[0_20px_60px_rgba(3,70,148,0.3)] backdrop-blur-sm px-16 py-10 flex flex-col justify-center items-start min-w-[450px] max-w-3xl ml-[3cm] overflow-hidden">
+            {/* Decorative background elements */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-xl"></div>
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-[#FFD700]/20 rounded-full blur-lg"></div>
+            
+            {/* Floating accent line */}
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#FFD700] via-[#FFA500] to-transparent"></div>
+            
+            {/* Content */}
+            <div className="relative z-10">
+              <h1 className="text-4xl md:text-4xl font-extrabold text-white mb-4 drop-shadow-xl tracking-tight leading-tight">
+                Welcome to The Bitebox!<br />
+                Your smart kitchen companion.
+              </h1>
+              <p className="text-lg md:text-xl text-white mb-6 font-medium leading-snug">
+                Skip the grocery trip and get recipes delivered right to your doorstep, so you can cook when it fits your schedule. Plus, pause or cancel any time!
+              </p>
+              <a
+                href="/recipes"
+                className="bg-white/20 backdrop-blur-sm border border-white/30 text-white font-bold py-3 px-10 rounded-full shadow-lg transition-all duration-300 hover:bg-white/30 hover:scale-105 text-lg hover:shadow-xl"
+              >
+                View Recipes
+              </a>
+            </div>
           </div>
           {/* Hero Image */}
           <img
@@ -68,13 +78,13 @@ const AboutUs = () => {
       <div className="w-full max-w-4xl bg-white border border-black rounded-xl p-8 shadow">
         <h2 className="text-2xl font-bold mb-4">About us</h2>
         <p className="text-gray-800 mb-4">
-          The Bitebox was created to simplify the way people cook and shop for food. This is designed to offer more than just recipes. We provide ready-to-cook ingredient bundles tailored to each recipe, making home cooking easier, faster, and waste-free.
+        Bitebox was built to make cooking and grocery planning simpler for everyone. It goes beyond just sharing recipes by delivering pre-measured ingredient bundles for each dish. This helps users cook at home more easily, save time, and avoid food waste.
         </p>
         <p className="text-gray-800 mb-4">
-          Our mission is to bridge the gap between food inspiration and action. No more jumping between recipe sites and grocery lists. With The Bitebox, you can discover dishes, learn how to cook them, and instantly order all the ingredients you need, measured and ready to go.
+        Our goal is to make the journey from finding a recipe to cooking it as smooth as possible. Instead of switching between websites and writing grocery lists, Bitebox lets you explore new dishes, learn how to make them, and get all the exact ingredients delivered, measured, packed, and ready to use.
         </p>
         <p className="text-gray-800 mb-4">
-          We’re focused on helping busy individuals, students, and home cooks save time, reduce food waste, and gain confidence in the kitchen. Whether you're a beginner or a seasoned cook, The Bitebox offers a smooth, enjoyable experience from recipe selection to your final dish.
+        We aim to support busy people, students, and home cooks by making cooking easier, quicker, and less wasteful. Bitebox is designed to help you feel more confident in the kitchen—whether you're just starting out or already experienced. From choosing a recipe to plating your meal, we make the whole process simple and enjoyable.
         </p>
         <p className="text-gray-800">
           Thank you for being part of our story. Let’s make cooking simple again.

@@ -4,20 +4,17 @@ const verifyToken = (req, res, next) => {
     const token = req.header('Authorization');
     if (!token) {
         next();
-        // return res.status(401).json({ message: 'Access Denied' });
     }
     try {
         const verified = jwt.verify(
-            token.split(' ')[1], // Assuming the token is in the format "Bearer
+            token.split(' ')[1],
             process.env.JWT_SECRET || 'SECRETHO'
         );
 
-        req.user = verified; // Attach user info to request object
+        req.user = verified;
         next();
     } catch (err) {
-       // console.log(err);
        next();
-        // res.status(400).json({ message: 'Invalid Token' });
     }
 };
 

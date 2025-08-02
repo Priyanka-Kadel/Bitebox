@@ -98,7 +98,6 @@ const loginUser = async (req, res) => {
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
             if (req.loginLimiter) req.loginLimiter.increment();
-            // Update failed login stats
             user.loginStats = user.loginStats || {};
             user.loginStats.totalFailedLogins = (user.loginStats.totalFailedLogins || 0) + 1;
             user.loginStats.consecutiveFailedLogins = (user.loginStats.consecutiveFailedLogins || 0) + 1;
